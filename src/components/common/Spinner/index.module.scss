@@ -1,0 +1,21 @@
+@import "../../../styles/abstracts/variables.scss";
+
+.SpinnerContainer {
+  display: flex;
+  position: absolute;
+  z-index: 999;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  height: 100%;
+  width: 100%;
+  :global {
+    .ant-spin {
+      .ant-spin-dot {
+        .ant-spin-dot-item {
+          background-color: $info;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,109 @@
+@import '../../../styles/abstracts/variables.scss';
+
+.ButtonContainer {
+  text-transform: none;
+  font-weight: 400;
+  font-size: .8571em;
+  font-family: $primary-light;
+  border: 1px solid transparent;
+  background-color: transparent;
+  text-align: center;
+  height: 2.4rem;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: $defaut-button-radius;
+  padding: 10px 22px;
+  margin: 10px 5px 10px 1px;
+  &:hover {
+    background-color: #00000000;
+    border: 1px solid transparent;
+    box-shadow: $default-button-hover-shadow;
+    transition: box-shadow $default-transition-duration ease-in-out;
+  }
+}
+
+
+.default,
+.default:focus,
+.default:hover,
+.default:active{
+  color: $white;
+  background-color: $default;
+  border-color: $default;
+}
+
+.primary,
+.primary:focus,
+.primary:active {
+  color: $white;
+  background-color: $primary;
+  border-color: $primary;
+  &:hover {
+  color: $white;
+  background-color: $hover-primary;
+  background-color: $hover-primary;
+  transition: background-color $default-transition-duration ease-in-out,
+    background-color $default-transition-duration ease-in-out;
+  }
+}
+
+.info,
+.info:active,
+.info:focus {
+  color: $white;
+  background-color: $info;
+  border-color: $info;
+  &:hover {
+    color: $white;
+    background-color: $hover-info;
+    background-color: $hover-info;
+    transition: background-color $default-transition-duration,
+      background-color $default-transition-duration;
+  }
+}
+
+.success,
+.success:active,
+.success:focus {
+  color: $white;
+  background-color: $success;
+  border-color: $success;
+  &:hover {
+    color: $white;
+    background-color: $hover-success;
+    background-color: $hover-success;
+    transition: background-color $default-transition-duration,
+      background-color $default-transition-duration;
+  }
+}
+
+.danger,
+.danger:active,
+.danger:focus {
+  color: $white;
+  background-color: $danger;
+  border-color: $danger;
+  &:hover {
+    color: $white;
+    background-color: $hover-danger;
+    background-color: $hover-danger;
+    transition: background-color $default-transition-duration,
+      background-color $default-transition-duration;
+  }
+}
+
+.warning,
+.warning:active,
+.warning:focus {
+  color: $white;
+  background-color: $warning;
+  border-color: $warning;
+  &:hover {
+    color: $white;
+    background-color: $hover-warning;
+    background-color: $hover-warning;
+    transition: background-color $default-transition-duration,
+      background-color $default-transition-duration;
+  }
+}

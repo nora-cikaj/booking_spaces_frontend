@@ -1,0 +1,47 @@
+@import '../abstracts/variables.scss';
+
+html,
+body {
+  background-color: $gray-light;
+  font-family: $primary-light;
+}
+html,
+body {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 400 !important;
+    font-size: $base-font-size;
+    color: $dark;
+    line-height: 1.5;
+  }
+
+  .ant-alert-with-description {
+    white-space: pre-wrap !important;
+    overflow: hidden !important;
+  }
+
+  .ant-notification-notice-description {
+    white-space: pre-wrap !important;
+    overflow: hidden !important;
+  }  
+
+  .ant-btn {
+    text-shadow: none !important;
+  }
+}
+
+@media only screen and (max-width: 991px) {
+  body {
+    font-size: $tablet-font-size;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  body {
+    font-size: $mobile-font-size;
+  }
+}

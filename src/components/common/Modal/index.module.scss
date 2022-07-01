@@ -1,0 +1,42 @@
+@import "../../../styles/abstracts/variables.scss";
+
+.Modal {
+  :global {
+    .ant-modal {
+      border-radius: $default-border-radius;
+      border: 0;
+      padding: 0;
+
+      .ant-modal-content {
+        border-radius: $default-border-radius;
+        background: $white;
+
+        .ant-modal-close {
+          .ant-modal-close-x {
+            .ant-modal-close-icon {
+              color: $primary;
+            }
+          }
+        }
+
+        .ant-modal-header {
+          border-radius: $default-border-radius $default-border-radius 0 0;
+          font-family: $primary-medium;
+          font-size: 200%;
+        }
+
+        .ant-modal-body {
+          border-radius: 0 0 $default-border-radius $default-border-radius;
+        }
+
+        .ant-modal-footer {
+          display: none;
+          visibility: hidden;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+}

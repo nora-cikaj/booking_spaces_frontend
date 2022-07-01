@@ -1,0 +1,60 @@
+@import '../../../styles/abstracts/variables.scss';
+
+.InputContainer {
+  height: $default-input-height;
+  display: flex;
+  align-items: center;
+  border-radius: $default-input-radius;
+  background-color: $white;
+  position: relative;
+  border: 1px solid $light;
+  box-shadow: none;
+  min-width: 100px;
+
+  :global {
+    outline: none !important;
+    border-color: $light !important;
+    border-radius: $default-input-radius !important;
+    box-shadow: none !important;
+    background-color: $white;
+    
+    .ant-input-affix-wrapper {
+      border-color: $light !important;
+      outline: none !important;
+      border-radius: $default-input-radius !important;
+      box-shadow: none !important;
+      .ant-input-affix-wrapper-focused {
+        background-color: $white;
+      }
+      .ant-input,
+      .ant-input:focus,
+      .ant-input:active,
+      .ant-input:hover {
+        border-color: $light !important;
+        outline: none !important;
+        border-radius: $default-input-radius !important;
+        background-color: $white;
+      }
+    }
+  }
+
+      input:-webkit-autofill,
+      input:-webkit-autofill:hover, 
+      input:-webkit-autofill:focus, 
+      input:-webkit-autofill:active {
+        box-shadow: 0 0 0 30px white inset !important;
+        -webkit-box-shadow: 0 0 0 30px white inset !important;
+        background-color: $white !important;
+        font-family: $primary-light;
+        font-size: 90%;
+      }
+}
+
+.SuffixIcon {
+  position: absolute;
+  right: 11px;
+}
+
+.InputContainer.InputError {
+  border: 0.5px solid $danger !important;
+}

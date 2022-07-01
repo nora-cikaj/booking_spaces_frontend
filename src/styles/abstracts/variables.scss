@@ -1,0 +1,75 @@
+/* Palette */
+
+$default: #888888;
+$primary: #f96332;
+$info: #2ca8ff;
+$success: #18ce0f;
+$danger: #ff3636;
+$warning: #ffb236;
+
+$hover-default: #979797;
+$hover-primary: #fa7a51;
+$hover-info: #4cb5ff;
+$hover-success: #18eb0f;
+$hover-danger: #ff5655;
+$hover-warning: #ffbe56;
+
+/* Other colors */
+
+$indigo: #6610f2;
+$purple: #6f42c1;
+$pink: #e83e8c;
+$red: #dc3545;
+$orange: #fd7e14;
+$yellow: #ffc107;
+$green: #28a745;
+$teal: #20c997;
+$cyan: #17a2b8;
+$light-blue: #9fd5ff;
+$blue: #49b1ff;
+$white: #fff;
+$gray: #6c757d;
+$gray-dark: #343a40;
+$gray-light: #ebecf2;
+$dark: #2c2c2c;
+$light: #e3e3e3;
+$shadow: rgba(39, 39, 39, 0.1);
+$shadow-darker: rgba(0, 0, 0, 0.2);
+
+/* Typography */
+
+$primary-black: 'Montserrat-ExtraBold';
+$primary-black-italic: 'Montserrat-ExtraBoldItalic';
+$primary-bold: 'Montserrat-Bold';
+$primary-bold-italic: 'Montserrat-BoldItalic';
+$primary-italic: 'Montserrat-Italic';
+$primary-light: 'Montserrat-Light';
+$primary-light-italic: 'Montserrat-LightItalic';
+$primary-medium: 'Montserrat-Medium';
+$primary-medium-italic: 'Montserrat-MediumItalic';
+$primary-regular: 'Montserrat-Regular';
+
+/* Shadow */
+
+$default-card-shadow: 0 1px 15px 1px $shadow;
+$default-button-hover-shadow: 0px 2px 8px 0px $shadow-darker;
+
+/* Dimensions */
+
+$header-height: 135px;
+$page-with-header-height: calc(100vh - 65px);
+$app-padding: 30px;
+$defaut-button-radius: 0.1875rem;
+$default-border-radius: calc(0.25rem - 1px);
+$default-input-radius: 30px;
+$default-input-height: 36.5px;
+
+/* Durations */
+
+$default-transition-duration: 0.3s;
+
+/* Base font size */
+
+$base-font-size: 16px;
+$tablet-font-size: 14px;
+$mobile-font-size: 12px;

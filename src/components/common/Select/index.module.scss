@@ -1,0 +1,50 @@
+@import '../../../styles/abstracts/variables.scss';
+
+.InputContainer {
+  position: relative;
+  flex: 1;
+  align-items: center;
+  border-radius: $default-input-radius !important;
+  height: $default-input-height;
+  width: 100%;
+
+  :global {
+    width: 100%;
+    min-width: 200px;
+    .ant-select-selector {
+      .ant-select-selection-item {
+        height: $default-input-height !important;
+        text-align: left;
+        margin-top: 3.7px;
+        line-height: 2rem;
+        font-size: 90%;
+      }
+    }
+
+    .ant-select-selector,
+    .ant-select-selector:focus,
+    .ant-select-selector:active {
+      border-color: $light !important;
+      box-shadow: none !important;
+      min-width: 200px;
+      width: 100%;
+      border-radius: $default-input-radius !important;
+      height: $default-input-height !important;
+      align-items: center;
+      font-family: $primary-regular;
+    }
+  }
+}
+
+.InputContainer.InputError {
+  :global {
+    .ant-select-focused .ant-select-selector,
+    .ant-select-selector,
+    .ant-select-selector:focus,
+    .ant-select-selector:active {
+      border: 0.5px solid $danger !important;
+    }
+  }
+}
+
+
