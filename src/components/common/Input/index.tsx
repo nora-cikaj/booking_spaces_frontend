@@ -63,6 +63,7 @@ const CustomInput = (props: CustomInputProps): ReactElement => {
       className={`${styles.InputContainer} ${((props.error || props.value === '') && props.touched) && styles.InputError}`}
       {...costumProps}
       spellCheck={false}
+      autoComplete="off"
     />
   );
 };

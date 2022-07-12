@@ -72,7 +72,6 @@ const CustomSelect = (props: SelectPropsType): ReactElement => {
     (option) => (
       <Option
         key={option.key}
-        className={styles.option}
         value={option.value}
       >
         {option.label}
@@ -81,7 +80,7 @@ const CustomSelect = (props: SelectPropsType): ReactElement => {
   );
   return (
     <Select
-      className={`${styles.InputContainer} ${styles.select} ${((props.error || props.value === '') && props.touched) && styles.InputError}`}
+      className={`${styles.InputContainer} ${styles.select} ${((props.error || props.value === undefined) && props.touched) && styles.InputError}`}
       {...commonProps}
     >
       {options}

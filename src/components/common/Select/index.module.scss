@@ -11,6 +11,9 @@
   :global {
     width: 100%;
     min-width: 200px;
+    .ant-select-item-option {
+      background-color: red;
+    }
     .ant-select-selector {
       .ant-select-selection-item {
         height: $default-input-height !important;

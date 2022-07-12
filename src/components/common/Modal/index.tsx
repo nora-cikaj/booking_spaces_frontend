@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 import { Modal } from 'antd';
 
-import classes from './index.module.scss';
+import styles from './index.module.scss';
 
 type CustomModalProps = {
   wrapClassName?: string,
@@ -42,7 +42,7 @@ const CustomModal = (props: CustomModalProps) => {
 };
 
 CustomModal.defaultProps = {
-  wrapClassName: classes.Modal,
+  wrapClassName: styles.Modal,
   maskClosable: false,
   destroyOnClose: false,
   centered: false,

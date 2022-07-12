@@ -12,17 +12,28 @@
         background: $white;
 
         .ant-modal-close {
+          padding-top: 14px;
           .ant-modal-close-x {
             .ant-modal-close-icon {
-              color: $primary;
+              color: $danger;
+              opacity: 0.6;
+              font-size: larger;
+              &:hover {
+                opacity: 1;
+              }
             }
           }
         }
 
         .ant-modal-header {
           border-radius: $default-border-radius $default-border-radius 0 0;
-          font-family: $primary-medium;
-          font-size: 200%;
+          font-family: $primary-bold;
+          border: none;
+          padding: 30px 24px 10px;
+          .ant-modal-title {
+            font-size: x-large;
+            text-align: center;
+          }
         }
 
         .ant-modal-body {

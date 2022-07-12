@@ -42,9 +42,7 @@
   &:hover {
   color: $white;
   background-color: $hover-primary;
-  background-color: $hover-primary;
-  transition: background-color $default-transition-duration ease-in-out,
-    background-color $default-transition-duration ease-in-out;
+  transition: background-color $default-transition-duration;
   }
 }
 
@@ -57,9 +55,7 @@
   &:hover {
     color: $white;
     background-color: $hover-info;
-    background-color: $hover-info;
-    transition: background-color $default-transition-duration,
-      background-color $default-transition-duration;
+    transition: background-color $default-transition-duration;
   }
 }
 
@@ -72,9 +68,7 @@
   &:hover {
     color: $white;
     background-color: $hover-success;
-    background-color: $hover-success;
-    transition: background-color $default-transition-duration,
-      background-color $default-transition-duration;
+    transition: background-color $default-transition-duration;
   }
 }
 
@@ -87,9 +81,7 @@
   &:hover {
     color: $white;
     background-color: $hover-danger;
-    background-color: $hover-danger;
-    transition: background-color $default-transition-duration,
-      background-color $default-transition-duration;
+    transition: background-color $default-transition-duration;
   }
 }
 
@@ -102,8 +94,6 @@
   &:hover {
     color: $white;
     background-color: $hover-warning;
-    background-color: $hover-warning;
-    transition: background-color $default-transition-duration,
-      background-color $default-transition-duration;
+    transition: background-color $default-transition-duration;
   }
 }
