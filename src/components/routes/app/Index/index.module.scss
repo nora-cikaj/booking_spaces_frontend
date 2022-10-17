@@ -1,0 +1,8 @@
+@import '../../../../styles/abstracts/variables.scss';
+
+.Header {
+  padding: 0 !important;
+  height: 15vh !important;
+  color: $white !important;
+  background: $header-background-gradient !important;
+}

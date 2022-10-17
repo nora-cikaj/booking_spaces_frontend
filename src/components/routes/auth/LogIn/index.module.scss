@@ -4,32 +4,7 @@ html, body {
   background-color: $white !important;
 }
 
-.googleLoginButton {
-  width: 20rem;
-  height: 2.5rem;
-  position: relative;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid $light;
-  background-color: $white;
-  color: $dark;
-  padding: 5px;
-  border-radius: $default-border-radius;
-  transition: background-color $default-transition-duration ease-in-out;
-
-
-  &:hover {
-    background-color: $gray-light;
-    transition: background-color $default-transition-duration ease-in-out;
-  }
-
-  .googleLogo {
-    display: flex;
-    width: 1.5rem;
-    height: 1.5rem;
-    margin-right: 1rem;
-  }
-  .googleLoginText {
-  }
+.container {
+  height: 100vh;
+  padding: 50vh 0 0;
 }

@@ -1,23 +1,29 @@
 import { ReactElement } from 'react';
-import { Layout } from 'antd';
+import { Outlet, useLocation } from 'react-router-dom';
+import { Button, Layout } from 'antd';
 import LeftMenu from '../../../common/SideMenu';
-import Table from '../../../common/Table';
-import Card from '../../../common/Card';
 import styles from './index.module.scss';
+import CustomHeader from '../../../common/Header';
 
 const AppIndex = (): ReactElement => {
-  const { pathname } = window.location;
+  const { pathname } = useLocation();
+  const title = pathname.split('/').pop();
 
   return (
     <Layout>
       <LeftMenu pathname={pathname} />
-      <Card
-        style={{ width: '100%' }}
-      >
-        <div>
-          Hello
-        </div>
-      </Card>
+      <Layout>
+        <Layout.Header
+          className={styles.Header}
+        >
+          <CustomHeader title={title!} />
+        </Layout.Header>
+        <Layout.Content>
+          <div>
+            <Outlet />
+          </div>
+        </Layout.Content>
+      </Layout>
     </Layout>
   );
 };

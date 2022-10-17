@@ -6,24 +6,34 @@ import styles from './index.module.scss';
 
 type CustomButtonProps = {
   htmlType?: 'button' | 'submit' | 'reset' | undefined,
-  buttonType: 'default' | 'primary' | 'info' | 'success' | 'danger' | 'warning',
+  buttonType: 'default' | 'primary' | 'info' | 'success' | 'danger' | 'warning' | 'ghost',
   onClick?: () => void,
   label?: string,
   loading?: boolean,
   style?: any,
   disabled?: boolean,
   danger?:boolean,
-  block?: boolean
+  block?: boolean,
+  outline?: boolean,
   icon?: IconProp,
   role?: any;
 };
 
+const btType = (type: string, outline: boolean | undefined) => {
+  let buttonType: string;
+  if (outline === true) {
+    buttonType = `${type}Outlined`;
+  } else {
+    buttonType = type;
+  }
+  return buttonType;
+};
+
 const CustomButton = (props: CustomButtonProps): ReactElement => {
-  const btnType = props.buttonType;
+  const btnType = btType(props.buttonType, props.outline);
   return (
     <Button
       role={props.role}
-      data-testid="button"
       style={props.style}
       className={`${styles.ButtonContainer} ${styles[btnType]}`}
       htmlType={props.htmlType}
@@ -48,6 +58,7 @@ CustomButton.defaultProps = {
   disabled: false,
   danger: false,
   block: false,
+  outline: false,
   icon: undefined,
   role: undefined,
 };

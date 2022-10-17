@@ -2,7 +2,7 @@ import { ReactElement } from 'react';
 import { Avatar } from 'antd';
 
 type CustomProps = {
-  avatar: string;
+  src: string | undefined;
   style?: any;
   className?: string;
 }
@@ -10,7 +10,7 @@ const CustomAvatar = (props: CustomProps): ReactElement => {
   return (
     <Avatar
       style={props.style}
-      src={props.avatar}
+      src={props.src}
       className={props.className}
     />
   );

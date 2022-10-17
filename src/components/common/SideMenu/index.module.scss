@@ -63,6 +63,7 @@
       width: fit-content;
       margin: 0 10px;
       font-size: 14px;
+      text-transform: capitalize;
       transition: all 0.3s cubic-bezier(0.65, 0.05, 0.36, 1);
     }
     .UserText.collapsed {

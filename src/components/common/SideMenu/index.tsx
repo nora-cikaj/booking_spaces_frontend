@@ -1,16 +1,20 @@
 import React, { ReactElement, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Layout, Menu, MenuProps } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faMoneyBillWave,
+  faDoorClosed,
   faChartBar,
   faArrowRightFromBracket,
+  faUsers,
 } from '@fortawesome/free-solid-svg-icons';
 
 import Avatar from '../Avatar';
 import routes from '../../../constants/routes';
 import menuItems from '../../../constants/menu';
+import { RootState } from '../../../redux/store';
 import styles from './index.module.scss';
 
 const { Sider } = Layout;
@@ -26,7 +30,7 @@ type MenuItem = {
 }
 
 const getItem = ({ item, pathname }: { item: MenuItem, pathname: string }) => {
-  const isCurrent = (pathname === item.to);
+  const isCurrent = (pathname.split('/').pop() === item.to);
 
   return (
     <Link
@@ -48,31 +52,27 @@ const getItem = ({ item, pathname }: { item: MenuItem, pathname: string }) => {
 
 const items: MenuItem[] = [
   {
-    label: 'Option 1',
-    key: '1',
-    to: '/1',
-    icon: <FontAwesomeIcon className={styles.icon} icon={faMoneyBillWave} />,
+    label: 'Users',
+    key: `${routes.USERS}`,
+    to: `${routes.USERS}`,
+    icon: <FontAwesomeIcon className={styles.icon} icon={faUsers} />,
   },
   {
-    label: 'Option 2',
-    key: '2',
-    to: '/2',
-    icon: <FontAwesomeIcon className={styles.icon} icon={faMoneyBillWave} />,
+    label: 'Spaces',
+    key: `${routes.SPACES}`,
+    to: `${routes.SPACES}`,
+    icon: <FontAwesomeIcon className={styles.icon} icon={faDoorClosed} />,
   },
   {
     label: 'Option 3',
     key: '3',
-    to: '/3',
+    to: '3',
     icon: <FontAwesomeIcon className={styles.icon} icon={faMoneyBillWave} />,
   },
 ];
 
-function SideMenu(props: SideMenuProps): ReactElement {
-  // Dummy user, the user will be fetched from the redux
-  const user = {
-    avatar: 'https://fenix.group/wp-content/uploads/2017/12/Home-Header_background2d.jpg',
-    name: 'Leonora',
-  };
+const SideMenu = (props: SideMenuProps): ReactElement => {
+  const user = useSelector((state: RootState) => { return state.auth.user; });
   const [collapsed, setCollapsed] = useState(true);
 
   return (
@@ -87,22 +87,20 @@ function SideMenu(props: SideMenuProps): ReactElement {
           <FontAwesomeIcon icon={faChartBar} />
         </span>
         <span className={`${styles.LogoText} ${collapsed && styles.collapsed}`}>
-          Menu
+          MeetUp
         </span>
       </div>
 
       <hr className={styles.BreakLine} />
 
-      <Link to={routes.USER}>
-        <div className={styles.User}>
-          <span className={`${styles.UserIcon} ${collapsed && styles.collapsed}`}>
-            <Avatar avatar={user.avatar} />
-          </span>
-          <span className={`${styles.UserText} ${collapsed && styles.collapsed}`}>
-            {user.name}
-          </span>
-        </div>
-      </Link>
+      <div className={styles.User}>
+        <span className={`${styles.UserIcon} ${collapsed && styles.collapsed}`}>
+          <Avatar src={user?.avatarUrl} />
+        </span>
+        <span className={`${styles.UserText} ${collapsed && styles.collapsed}`}>
+          {user?.name}
+        </span>
+      </div>
 
       <hr className={styles.BreakLine} />
 
@@ -112,7 +110,7 @@ function SideMenu(props: SideMenuProps): ReactElement {
         </Menu>
       </div>
 
-      <Link to={routes.LOG_OUT}>
+      <a href={routes.LOG_OUT}>
         <div className={styles.Logout}>
           <span className={`${styles.LogoutIcon} ${collapsed && styles.collapsed}`}>
             <FontAwesomeIcon icon={faArrowRightFromBracket} />
@@ -121,9 +119,9 @@ function SideMenu(props: SideMenuProps): ReactElement {
             {menuItems.LOG_OUT}
           </span>
         </div>
-      </Link>
+      </a>
     </Sider>
   );
-}
+};
 
 export default SideMenu;

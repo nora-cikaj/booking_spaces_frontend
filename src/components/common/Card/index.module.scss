@@ -13,10 +13,10 @@
     border-radius: $default-border-radius $default-border-radius 0 0;
 
   .Title {
-    margin: 10px 0 5px;
     display: flex;
     flex: 1;
-    font-size: 200%;
+    font-size: 150%;
+    font-family: $primary-bold;
     }
   }
 }

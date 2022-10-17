@@ -28,72 +28,162 @@
 .default:focus,
 .default:hover,
 .default:active{
-  color: $white;
-  background-color: $default;
-  border-color: $default;
+  color: $white !important;
+  background-color: $default !important;
+  border-color: $default !important;
+}
+
+.defaultOutlined,
+.defaultOutlined:active,
+.defaultOutlined:focus {
+  color: $default !important;
+  background-color: transparent !important;
+  border-color: $default !important;
+  box-shadow: none !important;
+  &:hover {
+    color: $hover-default !important;
+    background-color: transparent !important;
+    border-color: $default !important;
+    box-shadow: none !important;
+  }
 }
 
 .primary,
 .primary:focus,
 .primary:active {
-  color: $white;
-  background-color: $primary;
-  border-color: $primary;
+  color: $white !important;
+  background-color: $primary !important;
+  border-color: $primary !important;
   &:hover {
-  color: $white;
-  background-color: $hover-primary;
-  transition: background-color $default-transition-duration;
+  color: $white !important;
+  background-color: $hover-primary !important;
+  transition: background-color $default-transition-duration !important;
+  }
+}
+
+.primaryOutlined,
+.primaryOutlined:active,
+.primaryOutlined:focus {
+  color: $primary !important;
+  background-color: transparent !important;
+  border-color: $primary !important;
+  box-shadow: none !important;
+  &:hover {
+    color: $hover-primary !important;
+    background-color: transparent !important;
+    border-color: $primary !important;
+    box-shadow: none !important;
   }
 }
 
 .info,
 .info:active,
 .info:focus {
-  color: $white;
-  background-color: $info;
-  border-color: $info;
+  color: $white !important;
+  background-color: $info !important;
+  border-color: $info !important;
   &:hover {
-    color: $white;
-    background-color: $hover-info;
-    transition: background-color $default-transition-duration;
+    color: $white !important;
+    background-color: $hover-info !important;
+    transition: background-color $default-transition-duration !important;
+  }
+}
+
+.infoOutlined,
+.infoOutlined:active,
+.infoOutlined:focus {
+  color: $info !important;
+  background-color: transparent !important;
+  border-color: $info !important;
+  box-shadow: none !important;
+  &:hover {
+    color: $hover-info !important;
+    background-color: transparent !important;
+    border-color: $info !important;
+    box-shadow: none !important;
   }
 }
 
 .success,
 .success:active,
 .success:focus {
-  color: $white;
-  background-color: $success;
-  border-color: $success;
+  color: $white !important;
+  background-color: $success !important;
+  border-color: $success !important;
   &:hover {
-    color: $white;
-    background-color: $hover-success;
-    transition: background-color $default-transition-duration;
+    color: $white !important;
+    background-color: $hover-success !important;
+    transition: background-color $default-transition-duration !important;
+  }
+}
+
+.successOutlined,
+.successOutlined:active,
+.successOutlined:focus {
+  color: $success !important;
+  background-color: transparent !important;
+  border-color: $success !important;
+  box-shadow: none !important;
+  &:hover {
+    color: $hover-success !important;
+    background-color: transparent !important;
+    border-color: $success !important;
+    box-shadow: none !important;
   }
 }
 
 .danger,
 .danger:active,
 .danger:focus {
-  color: $white;
-  background-color: $danger;
-  border-color: $danger;
+  color: $white !important;
+  background-color: $danger !important;
+  border-color: $danger !important;
   &:hover {
-    color: $white;
-    background-color: $hover-danger;
-    transition: background-color $default-transition-duration;
+    color: $white !important;
+    background-color: $hover-danger !important;
+    transition: background-color $default-transition-duration !important;
+  }
+}
+
+.dangerOutlined,
+.dangerOutlined:active,
+.dangerOutlined:focus {
+  color: $danger !important;
+  background-color: transparent !important;
+  border-color: $danger !important;
+  box-shadow: none !important;
+  &:hover {
+    color: $hover-danger !important;
+    background-color: transparent !important;
+    border-color: $danger !important;
+    box-shadow: none !important;
   }
 }
 
 .warning,
 .warning:active,
 .warning:focus {
-  color: $white;
-  background-color: $warning;
-  border-color: $warning;
+  color: $white !important;
+  background-color: $warning !important;
+  border-color: $warning !important;
   &:hover {
-    color: $white;
-    background-color: $hover-warning;
-    transition: background-color $default-transition-duration;
+    color: $white !important;
+    background-color: $hover-warning !important;
+    transition: background-color $default-transition-duration !important;
+  }
+}
+
+.warningOutlined,
+.warningOutlined:active,
+.warningOutlined:focus {
+  color: $warning !important;
+  background-color: transparent !important;
+  border-color: $warning !important;
+  box-shadow: none !important;
+  &:hover {
+    color: $hover-warning !important;
+    background-color: transparent !important;
+    border-color: $warning !important;
+    box-shadow: none !important;
   }
 }
