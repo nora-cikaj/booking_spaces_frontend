@@ -1,6 +1,4 @@
-import axios from 'axios';
-import { ReactElement, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { ReactElement } from 'react';
 import LogInButton from './LogInButton';
 import styles from './index.module.scss';
 

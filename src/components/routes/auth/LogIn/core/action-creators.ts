@@ -1,8 +1,4 @@
-import {
-  isLoading,
-  hasError,
-  user,
-} from './auth-reducer';
+import { isLoading, hasError, user } from './auth-reducer';
 import { AppDispatch } from '../../../../../redux/store';
 import User from '../../../../../types/user';
 import { getUser } from './auth-api';
