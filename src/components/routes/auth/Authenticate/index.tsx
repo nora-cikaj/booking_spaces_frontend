@@ -10,16 +10,15 @@ const Authenticate = (): ReactElement => {
   const dispatch = useDispatch<AppDispatch>();
   const user = useSelector((state: RootState) => state.auth.user);
   const error = useSelector((state: RootState) => state.auth.error);
-
   useEffect(() => {
     dispatch(login());
   }, []);
   if (user) {
-    return <Navigate to={`${routes.APP}/${routes.APP.DASHBOARD}`} replace />;
+    return <Navigate to={`${routes.APP}`} replace />;
   }
 
   if (error) {
-    return <Navigate to={`${routes.AUTH.LOG_IN}`} replace />;
+    return <Navigate to={`${routes.LOG_IN}`} replace />;
   }
 
   return <Spinner loading />;
