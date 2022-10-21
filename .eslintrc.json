@@ -58,6 +58,8 @@
     "no-unused-vars": "off",
     "no-console": "off",
     "jsx-a11y/anchor-is-valid": "off",
-    "no-param-reassign": "off"
+    "no-param-reassign": "off",
+    "react/jsx-wrap-multilines": "off"
+
   }
 }

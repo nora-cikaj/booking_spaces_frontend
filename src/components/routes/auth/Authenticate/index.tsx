@@ -14,18 +14,15 @@ const Authenticate = (): ReactElement => {
   useEffect(() => {
     dispatch(login());
   }, []);
-
   if (user) {
-    return <Navigate to={`${routes.APP}/${routes.USERS}`} replace />;
+    return <Navigate to={`${routes.APP}/${routes.APP.DASHBOARD}`} replace />;
   }
 
   if (error) {
-    return <Navigate to={`${routes.LOG_IN}`} replace />;
+    return <Navigate to={`${routes.AUTH.LOG_IN}`} replace />;
   }
 
-  return (
-    <Spinner loading />
-  );
+  return <Spinner loading />;
 };
 
 export default Authenticate;
