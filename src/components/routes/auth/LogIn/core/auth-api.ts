@@ -9,3 +9,11 @@ export const getUser = async (): Promise<any> => {
   });
   return response.data;
 };
+
+export const logoutUser = async (): Promise<any> => {
+  const url = `${routes.API.BASE}/auth/logout`;
+  const response = await Axios({
+    method: 'GET',
+    url,
+  });
+};

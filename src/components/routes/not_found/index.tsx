@@ -19,7 +19,7 @@ const NotFound = (): ReactElement => {
         </span>
       </section>
       <div className={styles.link_container}>
-        <Link to={routes.APP.DASHBOARD} className={styles.more_link}>
+        <Link to={routes.APP} className={styles.more_link}>
           Go to main page
         </Link>
       </div>
