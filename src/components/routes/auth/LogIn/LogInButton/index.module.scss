@@ -2,7 +2,7 @@
 
 .googleLoginButton {
   width: 20rem;
-  height: 2.5rem;
+  height: 3.5rem;
   position: relative;
   display: inline-flex;
   justify-content: center;
@@ -13,10 +13,16 @@
   padding: 5px;
   border-radius: $default-border-radius;
   transition: background-color $default-transition-duration ease-in-out;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 
   &:hover {
-    background-color: $gray-light;
+    background-color: $light;
     transition: background-color $default-transition-duration ease-in-out;
+  }
+
+  .googleLoginText {
+    font-family: $primary-medium;
+    font-size: 15px;
   }
 
   .googleLogo {
