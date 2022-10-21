@@ -1,10 +1,127 @@
 @import '../../../../styles/abstracts/variables.scss';
 
-html, body {
+html,
+body {
   background-color: $white !important;
 }
 
 .container {
   height: 100vh;
-  padding: 50vh 0 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.splitScreenLeft {
+  flex: 0.5;
+  background-color: $white;
+  height: 100vh;
+  padding-bottom: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logoStyle {
+  width: 20%;
+}
+.titleLoginStyle {
+  font-family: 'Montserrat-Bold';
+  font-size: 50px;
+  margin-top: -10px;
+  padding-bottom: 50px;
+}
+
+.descriptionLoginStyle {
+  font-family: 'Montserrat-Medium';
+  font-size: 20px;
+  padding-bottom: 20px;
+}
+
+.splitScreenRight {
+  position: relative;
+  flex: 0.5;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $light-blue;
+}
+
+.imgContainer {
+  position: relative;
+  height: 55vh;
+  width: 80%;
+  background-color: $white;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.gifStyle {
+  width: 100%;
+}
+
+/* Landscape */
+@media only screen and (min-device-width: 800px) and (max-device-width: 2400px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+  .imgContainer {
+    width: 80%;
+    height: 45vh;
+  }
+  .container {
+    display: flex;
+    .logoStyle {
+      width: 30%;
+      margin-top: -100px;
+    }
+
+    .titleLoginStyle {
+      font-family: 'Montserrat-Bold';
+      font-size: 40px;
+      margin-top: -20px;
+      margin-bottom: 0px;
+    }
+    .descriptionLoginStyle {
+      font-family: 'Montserrat-Medium';
+      font-size: 15px;
+      padding-bottom: 0px;
+    }
+    .splitScreenLeft {
+      padding-bottom: 0px;
+    }
+  }
+}
+
+/* Portrait */
+@media only screen and (min-device-width: 500px) and (max-device-width: 1112px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 2) {
+  .imgContainer {
+    width: 80%;
+    height: 35vh;
+  }
+  .container {
+    display: flex;
+    flex-direction: column;
+    .logoStyle {
+      width: 30%;
+      margin-top: -50px;
+    }
+    .titleLoginStyle {
+      font-family: 'Montserrat-Bold';
+      font-size: 50px;
+      margin-top: -30px;
+      margin-bottom: 0px;
+    }
+    .descriptionLoginStyle {
+      font-family: 'Montserrat-Medium';
+      font-size: 20px;
+      padding-bottom: 0px;
+    }
+    .splitScreenLeft {
+      padding-bottom: 0px;
+    }
+  }
 }
