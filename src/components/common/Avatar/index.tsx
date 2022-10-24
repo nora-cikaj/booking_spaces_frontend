@@ -1,17 +1,19 @@
-import { ReactElement } from 'react';
+import { ReactElement, ReactNode } from 'react';
 import { Avatar } from 'antd';
 
 type CustomProps = {
-  src: string | undefined;
+  src: ReactNode | string;
   style?: any;
   className?: string;
-}
+  crossOrigin?: 'anonymous' | 'use-credentials' | '';
+};
 const CustomAvatar = (props: CustomProps): ReactElement => {
   return (
     <Avatar
       style={props.style}
       src={props.src}
       className={props.className}
+      crossOrigin={props.crossOrigin}
     />
   );
 };
@@ -19,6 +21,7 @@ const CustomAvatar = (props: CustomProps): ReactElement => {
 CustomAvatar.defaultProps = {
   style: undefined,
   className: '',
+  crossOrigin: '',
 };
 
 export default CustomAvatar;
