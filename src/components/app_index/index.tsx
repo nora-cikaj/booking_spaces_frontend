@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import App from '../routes/app/Index';
+import MainPage from '../routes/app/MainPage';
 import LogInPage from '../routes/auth/LogIn';
 import AuthenticatePage from '../routes/auth/Authenticate';
 import ProtectedRoute from '../common/ProtectedRoute';
@@ -22,7 +22,7 @@ function AppIndex() {
           path={routes.APP}
           element={
             <ProtectedRoute>
-              <App />
+              <MainPage />
             </ProtectedRoute>
           }
         />
