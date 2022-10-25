@@ -13,6 +13,11 @@
   display: flex;
   flex-direction: row-reverse;
   align-items: center;
+  :global {
+    .ant-btn {
+      border-radius: 8px;
+    }
+  }
 }
 
 .menuHeaderLeft {
