@@ -60,6 +60,7 @@
     "jsx-a11y/anchor-is-valid": "off",
     "no-param-reassign": "off",
     "react/jsx-wrap-multilines": "off",
-    "object-curly-newline": "off"
+    "object-curly-newline": "off",
+    "react/no-this-in-sfc": "off"
   }
 }
