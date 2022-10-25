@@ -4,17 +4,17 @@ import { Modal } from 'antd';
 import styles from './index.module.scss';
 
 type CustomModalProps = {
-  wrapClassName?: string,
-  title: string,
-  visible: boolean,
-  maskClosable?: boolean,
-  destroyOnClose?: boolean,
-  onCancel: () => void,
-  centered?: boolean,
-  content: ReactElement,
-  style?: any,
-  width?: number,
-}
+  wrapClassName?: string;
+  title: string;
+  visible: boolean;
+  maskClosable?: boolean;
+  destroyOnClose?: boolean;
+  onCancel: () => void;
+  centered?: boolean;
+  content: ReactElement;
+  style?: any;
+  width?: number;
+};
 
 const CustomModal = (props: CustomModalProps) => {
   const footer: [] = [];
