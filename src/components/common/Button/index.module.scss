@@ -3,7 +3,7 @@
 .ButtonContainer {
   text-transform: none;
   font-weight: 400;
-  font-size: .8571em;
+  font-size: 0.8571em;
   font-family: $primary-light;
   border: 1px solid transparent;
   background-color: transparent;
@@ -23,11 +23,10 @@
   }
 }
 
-
 .default,
 .default:focus,
 .default:hover,
-.default:active{
+.default:active {
   color: $white !important;
   background-color: $default !important;
   border-color: $default !important;
@@ -55,9 +54,9 @@
   background-color: $primary !important;
   border-color: $primary !important;
   &:hover {
-  color: $white !important;
-  background-color: $hover-primary !important;
-  transition: background-color $default-transition-duration !important;
+    color: $white !important;
+    background-color: $hover-primary !important;
+    transition: background-color $default-transition-duration !important;
   }
 }
 
@@ -86,6 +85,11 @@
     color: $white !important;
     background-color: $hover-info !important;
     transition: background-color $default-transition-duration !important;
+  }
+}
+:global {
+  .ant-btn {
+    border-radius: 10px;
   }
 }
 

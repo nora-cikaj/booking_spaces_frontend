@@ -17,7 +17,7 @@
     border-radius: $default-input-radius !important;
     box-shadow: none !important;
     background-color: $white;
-    
+
     .ant-input-affix-wrapper {
       border-color: $light !important;
       outline: none !important;
@@ -38,16 +38,16 @@
     }
   }
 
-      input:-webkit-autofill,
-      input:-webkit-autofill:hover, 
-      input:-webkit-autofill:focus, 
-      input:-webkit-autofill:active {
-        box-shadow: 0 0 0 30px white inset !important;
-        -webkit-box-shadow: 0 0 0 30px white inset !important;
-        background-color: $white !important;
-        font-family: $primary-light;
-        font-size: 90%;
-      }
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    box-shadow: 0 0 0 10px white inset !important;
+    -webkit-box-shadow: 0 0 0 10px white inset !important;
+    background-color: $white !important;
+    font-family: $primary-light;
+    font-size: 90%;
+  }
 }
 
 .SuffixIcon {
