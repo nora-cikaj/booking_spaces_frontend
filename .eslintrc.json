@@ -61,6 +61,7 @@
     "no-param-reassign": "off",
     "react/jsx-wrap-multilines": "off",
     "object-curly-newline": "off",
-    "react/no-this-in-sfc": "off"
+    "react/no-this-in-sfc": "off",
+    "operator-linebreak": "off"
   }
 }

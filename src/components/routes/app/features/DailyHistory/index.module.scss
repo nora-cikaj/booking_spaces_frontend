@@ -1,0 +1,66 @@
+@import '../../../../../styles/abstracts/variables.scss';
+
+.dailyHistoryContainer {
+  flex: 0.3;
+  height: 80vh;
+  border-radius: 20px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+
+  :global {
+    .ant-btn {
+      border-radius: 40px;
+      padding: 5px 10px 5px 10px;
+    }
+    .ant-list-item-meta-content {
+      flex: 0.4 1 !important;
+    }
+    .ant-list-item-action {
+      margin-left: 0px !important;
+    }
+  }
+}
+.solidDevider {
+  border-top: 2px solid #1890ff;
+  border-bottom: #1890ff;
+  border-radius: 10px;
+  width: 100%;
+}
+
+.dailyHistoryTitleStyle {
+  font-family: $primary-bold;
+  font-size: 25px;
+  padding-top: 20px;
+}
+
+.iconStyles {
+  font-size: 20px;
+  color: #1890ff;
+}
+
+.titleIconStyles {
+  padding-top: 5px;
+}
+
+.iconDeleteStyles {
+  font-size: 20px;
+  color: #ff3b4f;
+}
+
+.tooltipStyle {
+  border-radius: 20px;
+}
+
+/* Add media queries for responsiveness - when the screen is 500px wide or less, stack the links on top of each other */
+@media only screen and (min-device-width: 800px) and (max-device-width: 2400px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+  .dailyHistoryContainer {
+    :global {
+      .ant-list-item-meta-content {
+        flex: 1 1 !important;
+      }
+    }
+  }
+}
+
+@media only screen and (min-device-width: 500px) and (max-device-width: 1112px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 2) {
+}

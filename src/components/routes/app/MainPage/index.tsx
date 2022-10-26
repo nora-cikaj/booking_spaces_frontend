@@ -1,7 +1,7 @@
 import React from 'react';
 import AppHeader from '../features/AppHeader';
 import FloorMap from '../features/FloorMap';
-import Reservations from '../features/Reservations';
+import DailyHistory from '../features/DailyHistory';
 import styles from './index.module.scss';
 
 const MainPage: React.FC = () => {
@@ -10,7 +10,7 @@ const MainPage: React.FC = () => {
       <AppHeader />
       <div className={styles.mainContainer}>
         <FloorMap />
-        <Reservations />
+        <DailyHistory />
       </div>
     </div>
   );
