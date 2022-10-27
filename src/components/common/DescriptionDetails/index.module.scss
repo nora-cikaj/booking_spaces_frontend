@@ -1,0 +1,33 @@
+@import '../../../styles/abstracts/variables.scss';
+
+.site_description_details_profile_wrapper {
+  margin-top: 7px;
+  color: rgba(0, 0, 0, 0.65);
+  font-size: 14px;
+  line-height: 0.5;
+}
+
+.ant_drawer_body p.site_description_item_profile_p {
+  display: block;
+  margin-bottom: 16px;
+  color: rgba(0, 0, 0, 0.85);
+  font-size: 16px;
+  line-height: 1.5715;
+}
+
+[data-theme='compact'] .ant_drawer_body p.site_description_item_profile_p {
+  font-size: 14px;
+  line-height: 1.66667;
+}
+
+.site_description_item_profile_p_label {
+  display: inline-block;
+  margin-right: 8px;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.iconStyles {
+  font-size: 30px;
+  margin-top: -5px;
+  color: #1890ff;
+}

@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { Button, Divider, List, Popconfirm, Skeleton, Tooltip } from 'antd';
 import { FcInfo } from 'react-icons/fc';
 import { MdDeleteForever, MdOutlineEditCalendar } from 'react-icons/md';
 import { BsFillCalendarCheckFill } from 'react-icons/bs';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import styles from './index.module.scss';
+import { DailyHistoryPropsType } from '../DetailsModal/types';
 
 interface DataType {
   loading: boolean | undefined;
@@ -23,7 +24,9 @@ interface DataType {
   nat: string;
 }
 
-const DailyHistory: React.FC = () => {
+const DailyHistory = ({
+  showDetailsModal,
+}: DailyHistoryPropsType): ReactElement => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<DataType[]>([]);
 
@@ -85,7 +88,7 @@ const DailyHistory: React.FC = () => {
                     color="#1890ff"
                     title="Reserved Booth info"
                   >
-                    <Button key="info">
+                    <Button key="info" onClick={() => showDetailsModal(true)}>
                       <FcInfo className={styles.iconStyles} />
                     </Button>
                   </Tooltip>,
