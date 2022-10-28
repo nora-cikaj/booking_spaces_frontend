@@ -1,3 +1,4 @@
+import moment from 'moment';
 import React, { ReactElement, useEffect, useState } from 'react';
 import { Button, Divider, List, Popconfirm, Skeleton, Tooltip } from 'antd';
 import { FcInfo } from 'react-icons/fc';
@@ -5,52 +6,31 @@ import { MdDeleteForever, MdOutlineEditCalendar } from 'react-icons/md';
 import { BsFillCalendarCheckFill } from 'react-icons/bs';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import styles from './index.module.scss';
-import { DailyHistoryPropsType } from '../DetailsModal/types';
-
-interface DataType {
-  loading: boolean | undefined;
-  gender: string;
-  name: {
-    title: string;
-    first: string;
-    last: string;
-  };
-  email: string;
-  picture: {
-    large: string;
-    medium: string;
-    thumbnail: string;
-  };
-  nat: string;
-}
+import { DailyHistoryPropsType } from './types';
+import { eventData } from './data';
 
 const DailyHistory = ({
+  showReservationModal,
   showDetailsModal,
 }: DailyHistoryPropsType): ReactElement => {
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState<DataType[]>([]);
-
+  const [data, setData] = useState<any[]>([]);
+  console.log(data);
   const loadMoreData = () => {
     if (loading) {
       return;
     }
     setLoading(true);
-    fetch(
-      'https://randomuser.me/api/?results=10&inc=name,gender,email,nat,picture&noinfo',
-    )
-      .then((res) => res.json())
-      .then((body) => {
-        setData([...data, ...body.results]);
-        setLoading(false);
-      })
-      .catch(() => {
-        setLoading(false);
-      });
+    setData(eventData);
   };
 
   useEffect(() => {
     loadMoreData();
   }, []);
+
+  const handleOnEdit = () => {
+    showReservationModal(true);
+  };
 
   return (
     <div className={styles.dailyHistoryContainer}>
@@ -73,7 +53,7 @@ const DailyHistory = ({
         <InfiniteScroll
           dataLength={data.length}
           next={loadMoreData}
-          hasMore={data.length < 50}
+          hasMore={data.length < 1}
           loader={<Skeleton paragraph={{ rows: 1 }} active />}
           endMessage={<Divider plain>It is all, nothing more 🫥</Divider>}
           scrollableTarget="scrollableDiv"
@@ -97,7 +77,7 @@ const DailyHistory = ({
                     color="#1890ff"
                     title="Edit reserved Booth"
                   >
-                    <Button key="edit">
+                    <Button key="edit" onClick={handleOnEdit}>
                       <MdOutlineEditCalendar className={styles.iconStyles} />
                     </Button>
                   </Tooltip>,
@@ -119,10 +99,12 @@ const DailyHistory = ({
                   </Tooltip>,
                 ]}
               >
-                <Skeleton title={false} loading={item.loading} active>
+                <Skeleton title={false} loading={false} active>
                   <List.Item.Meta
-                    title={<a href="https://ant.design">{item.name?.last}</a>}
-                    description="5:00 – 6:30pm"
+                    title={item.attendees[0].displayName}
+                    description={`${moment(item.start.dateTime).format(
+                      'LT',
+                    )} - ${moment(item.end.dateTime).format('LT')}`}
                   />
                 </Skeleton>
               </List.Item>

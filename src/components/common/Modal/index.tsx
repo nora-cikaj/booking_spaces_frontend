@@ -1,6 +1,5 @@
-import { ReactElement } from 'react';
+import { ReactNode, ReactElement } from 'react';
 import { Modal } from 'antd';
-
 import styles from './index.module.scss';
 
 type CustomModalProps = {
@@ -14,10 +13,10 @@ type CustomModalProps = {
   content: ReactElement;
   style?: any;
   width?: number;
+  footer?: ReactNode;
 };
 
 const CustomModal = (props: CustomModalProps) => {
-  const footer: [] = [];
   const commonProps = {
     wrapClassName: props.wrapClassName,
     title: props.title,
@@ -26,7 +25,7 @@ const CustomModal = (props: CustomModalProps) => {
     destroyOnClose: props.destroyOnClose,
     onCancel: props.onCancel,
     centered: props.centered,
-    footer,
+    footer: props.footer,
     style: props.style,
     width: props.width,
   };
@@ -48,6 +47,7 @@ CustomModal.defaultProps = {
   centered: false,
   style: undefined,
   width: undefined,
+  footer: null,
 };
 
 export default CustomModal;

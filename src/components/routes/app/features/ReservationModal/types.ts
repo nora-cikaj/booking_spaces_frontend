@@ -6,3 +6,8 @@ export type FormValues = {
   guests: string;
   description: string;
 };
+
+export type ReservationModalPropsType = {
+  showReservationModal: (a: boolean) => void;
+  title: string;
+};

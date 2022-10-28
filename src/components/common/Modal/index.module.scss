@@ -1,4 +1,4 @@
-@import "../../../styles/abstracts/variables.scss";
+@import '../../../styles/abstracts/variables.scss';
 
 .Modal {
   :global {
@@ -38,11 +38,6 @@
 
         .ant-modal-body {
           border-radius: 0 0 $default-border-radius $default-border-radius;
-        }
-
-        .ant-modal-footer {
-          display: none;
-          visibility: hidden;
         }
       }
     }

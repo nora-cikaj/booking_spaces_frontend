@@ -9,7 +9,7 @@ import styles from './index.module.scss';
 const { Option } = Select;
 
 type OptionProps = {
-  label: string;
+  label: string | ReactElement;
   value: string | number;
   key: number;
 };
