@@ -9,14 +9,18 @@ import CustomInput from '../../../../common/Input';
 import CustomSelect from '../../../../common/Select';
 import CustomButton from '../../../../common/Button';
 import styles from './index.module.scss';
-import { FormValues } from './types';
+import { FormValues, ReservationModalPropsType } from './types';
 
-const ReservationModal = (): ReactElement => {
+const ReservationModal = ({
+  showReservationModal,
+  title,
+}: ReservationModalPropsType): ReactElement => {
   return (
     <div>
       <CustomModal
-        title="BoothUp"
-        onCancel={() => console.log('Close')}
+        visible
+        title={`BoothUp ${title}`}
+        onCancel={() => showReservationModal(false)}
         content={
           <div>
             <Formik
@@ -71,7 +75,7 @@ const ReservationModal = (): ReactElement => {
                     style={{ width: '100%' }}
                     placeholder="Add guests"
                     options={[
-                      { key: 1, label: 'guest1', value: 'guest1' },
+                      { key: 1, label: <p>enri</p>, value: 'guest1' },
                       { key: 2, label: 'guest2', value: 'guest2' },
                       { key: 3, label: 'guest3', value: 'guest3' },
                     ]}
@@ -91,14 +95,17 @@ const ReservationModal = (): ReactElement => {
                       label="Book now"
                       htmlType="submit"
                     />
-                    <CustomButton buttonType="ghost" label="Cancel" />
+                    <CustomButton
+                      buttonType="ghost"
+                      label="Cancel"
+                      onClick={() => showReservationModal(false)}
+                    />
                   </div>
                 </Form>
               )}
             </Formik>
           </div>
         }
-        visible
       />
     </div>
   );
