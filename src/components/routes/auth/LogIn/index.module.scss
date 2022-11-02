@@ -2,7 +2,7 @@
 
 html,
 body {
-  background-color: $white !important;
+  background-color: #f6f8fc !important;
 }
 
 .container {
@@ -70,7 +70,7 @@ body {
 @media only screen and (min-device-width: 800px) and (max-device-width: 2400px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
   .imgContainer {
     width: 80%;
-    height: 45vh;
+    height: 50vh;
   }
   .container {
     display: flex;

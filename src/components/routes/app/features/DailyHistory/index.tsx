@@ -40,7 +40,6 @@ const DailyHistory = ({
           reservations
         </h1>
       </div>
-      <hr className={styles.solidDevider} />
       <div
         id="scrollableDiv"
         style={{
@@ -55,7 +54,7 @@ const DailyHistory = ({
           next={loadMoreData}
           hasMore={data.length < 1}
           loader={<Skeleton paragraph={{ rows: 1 }} active />}
-          endMessage={<Divider plain>It is all, nothing more 🫥</Divider>}
+          endMessage={<Divider plain>That&apos;s all, nothing more 🙅🏻‍♂️</Divider>}
           scrollableTarget="scrollableDiv"
         >
           <List
