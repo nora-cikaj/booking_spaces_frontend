@@ -3,9 +3,78 @@
 .mainFloorContainer {
   position: relative;
   flex: 0.7;
-  height: 80vh;
+  height: 83vh;
   overflow-y: scroll;
-  border-radius: 20px;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  border-radius: 15px;
+  box-shadow: #1890ff 0px 1px 4px, #1890ff 0px 0px 0px 3px;
+  background-color: $white;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+::-webkit-scrollbar {
+  display: none;
+}
+.ribbonTop {
+  position: fixed;
+  display: flex;
+  justify-content: left;
+  background-color: #1890ff;
+  color: $white;
+  font-family: $primary-bold;
+  width: 180px;
+  box-shadow: #1890ff 0px 1px 4px, #1890ff 0px 0px 0px 3px;
+  border-top-left-radius: 10px;
+  border-bottom-right-radius: 5px;
+}
+
+.spanRibbonTop {
+  margin-left: 20px;
+}
+
+.ribbonBottom {
+  display: flex;
+  justify-content: left;
+  background-color: #ff3b4f;
+  color: $white;
+  font-family: 'Montserrat-Bold';
+  font-size: 12px;
+  width: 170px;
+  margin-bottom: 0px;
+  box-shadow: #ff3b4f 0px 1px 4px, #ff3b4f 0px 0px 0px 3px;
+  border-bottom-left-radius: 11px;
+  border-top-right-radius: 5px;
+  position: fixed;
+  bottom: 5.6%;
+  margin-left: 3px;
+}
+
+.spanRibbonBottom {
+  margin-left: 15px;
+}
+.iconRibbonBottom {
+  font-size: 15px;
+  margin-top: 2px;
+}
+
+/* Add media queries for responsiveness - when the screen is 500px wide or less, stack the links on top of each other */
+@media only screen and (min-device-width: 800px) and (max-device-width: 1200px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+  .ribbonBottom {
+    bottom: 5.5%;
+  }
+}
+@media only screen and (min-device-width: 1300px) and (max-device-width: 1400px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+  .ribbonBottom {
+    bottom: 6.4%;
+  }
+}
+
+@media only screen and (min-device-width: 1000px) and (max-device-width: 1200px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 2) {
+  .ribbonBottom {
+    bottom: 7%;
+  }
+}
+@media only screen and (min-device-width: 700px) and (max-device-width: 1200px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 2) {
+  .ribbonBottom {
+    bottom: 6.3%;
+  }
 }

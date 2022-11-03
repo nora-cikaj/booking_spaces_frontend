@@ -2,10 +2,11 @@
 
 .dailyHistoryContainer {
   flex: 0.3;
-  height: 80vh;
-  border-radius: 20px;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  height: 83vh;
+  border-radius: 15px;
+  box-shadow: #1890ff 0px 1px 4px, #1890ff 0px 0px 0px 3px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 
   :global {
     .ant-btn {
@@ -18,19 +19,25 @@
     .ant-list-item-action {
       margin-left: 0px !important;
     }
+    .ant-divider-horizontal.ant-divider-with-text {
+      border-top-color: #1890ff;
+    }
   }
 }
-.solidDevider {
-  border-top: 2px solid #1890ff;
-  border-bottom: #1890ff;
-  border-radius: 10px;
-  width: 100%;
+
+::-webkit-scrollbar {
+  display: none;
 }
 
 .dailyHistoryTitleStyle {
   font-family: $primary-bold;
   font-size: 25px;
   padding-top: 20px;
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
+  background-color: #1890ff;
+  color: white;
+  height: 70px;
 }
 
 .iconStyles {
