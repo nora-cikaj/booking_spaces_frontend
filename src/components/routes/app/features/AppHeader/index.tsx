@@ -21,7 +21,7 @@ const AppHeader: React.FC = () => {
   return (
     <div className={styles.menuHeader}>
       <img
-        src="/images/logo_softup.svg"
+        src="/images/logo_boothup.svg"
         alt="logo"
         className={styles.logoStyle}
       />

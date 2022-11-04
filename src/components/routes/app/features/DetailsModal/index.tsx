@@ -2,15 +2,19 @@ import { ReactElement } from 'react';
 import { Avatar, Col, Divider, Row, Tooltip } from 'antd';
 import { AntDesignOutlined, UserOutlined } from '@ant-design/icons';
 import { SiGooglecalendar } from 'react-icons/si';
+import { useSelector } from 'react-redux';
 import { DescriptionItem } from '../../../../common/DescriptionItem';
 import { DescriptionDetails } from '../../../../common/DescriptionDetails';
 import CustomModal from '../../../../common/Modal';
 import { DailyHistoryPropsType } from './types';
 import styles from './index.module.scss';
+import { RootState } from '../../../../../redux/store';
 
 const DetailsModal = ({
   showDetailsModal,
 }: DailyHistoryPropsType): ReactElement => {
+  const users = useSelector((state: RootState) => state.users.usersList);
+
   return (
     <CustomModal
       title="Amphitheatre - Details"
