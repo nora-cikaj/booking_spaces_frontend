@@ -3,7 +3,13 @@ export type FormValues = {
   time: string;
   start: string;
   end: string;
-  guests: string;
+  guests: {
+    email: string;
+    displayName?: string | undefined;
+    organizer?: boolean | undefined;
+    self?: boolean | undefined;
+    responseStatus?: string | undefined;
+  }[];
   description: string;
 };
 

@@ -1,15 +1,30 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import AppHeader from '../features/AppHeader';
 import FloorMap from '../features/FloorMap';
 import ReservationModal from '../features/ReservationModal';
 import DailyHistory from '../features/DailyHistory';
 import styles from './index.module.scss';
 import DetailsModal from '../features/DetailsModal';
+import { AppDispatch, RootState } from '../../../../redux/store';
+import { listEvents } from './core/events/action-creators';
 
 const MainPage: React.FC = () => {
   const [isReservationModalShown, showReservationModal] = useState(false);
   const [isDetailsModalShown, showDetailsModal] = useState(false);
   const [selectedSpace, changeSelectedSpace] = useState('');
+
+  const events =
+    useSelector((state: RootState) => state.events.eventList) || [];
+
+  // const error = useSelector((state: RootState) => state.events.error);
+
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    dispatch(listEvents());
+  }, []);
+
   return (
     <div>
       <AppHeader />
@@ -19,6 +34,7 @@ const MainPage: React.FC = () => {
           showReservationModal={showReservationModal}
         />
         <DailyHistory
+          events={events}
           showReservationModal={showReservationModal}
           showDetailsModal={showDetailsModal}
         />
@@ -30,9 +46,6 @@ const MainPage: React.FC = () => {
             showReservationModal={showReservationModal}
             title={selectedSpace}
           />
-        ) : null}
-        {isDetailsModalShown ? (
-          <DetailsModal showDetailsModal={showDetailsModal} />
         ) : null}
       </div>
     </div>

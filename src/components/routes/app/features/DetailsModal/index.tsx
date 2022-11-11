@@ -1,20 +1,35 @@
+import { useDispatch, useSelector } from 'react-redux';
+import moment from 'moment';
 import { ReactElement } from 'react';
 import { Avatar, Col, Divider, Row, Tooltip } from 'antd';
 import { AntDesignOutlined, UserOutlined } from '@ant-design/icons';
 import { SiGooglecalendar } from 'react-icons/si';
+import { AppDispatch, RootState } from '../../../../../redux/store';
 import { DescriptionItem } from '../../../../common/DescriptionItem';
 import { DescriptionDetails } from '../../../../common/DescriptionDetails';
 import CustomModal from '../../../../common/Modal';
 import { DailyHistoryPropsType } from './types';
 import styles from './index.module.scss';
+import menu from '../../../../../constants/menu';
+import { modifyResourceName } from '../../../../../helpers/modifyResourceName';
+import { deselectEvent } from '../../MainPage/core/events/app-reducer';
 
 const DetailsModal = ({
   showDetailsModal,
 }: DailyHistoryPropsType): ReactElement => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const eventSelected = useSelector(
+    (state: RootState) => state.events.eventSelected,
+  );
+  const handleOnCancel = () => {
+    showDetailsModal(false);
+    dispatch(deselectEvent());
+  };
   return (
     <CustomModal
-      title="Amphitheatre - Details"
-      onCancel={() => showDetailsModal(false)}
+      title={modifyResourceName(eventSelected?.attendees[0].displayName)}
+      onCancel={handleOnCancel}
       style={{ width: '500px' }}
       content={
         <div>
@@ -29,21 +44,34 @@ const DetailsModal = ({
           </p>
           <Row>
             <Col span={12}>
-              <DescriptionItem title="Organizer" content="boothup@softup.co" />
+              <DescriptionItem
+                title="Organizer"
+                content={eventSelected?.organizer.email}
+              />
             </Col>
             <Col span={12}>
               <DescriptionItem
                 title="Creator"
-                content="dionis.uliu@softup.co"
+                content={eventSelected?.creator.email}
               />
             </Col>
           </Row>
           <Row>
             <Col span={12}>
-              <DescriptionItem title="Start" content="2022-10-27 | 17:00:00" />
+              <DescriptionItem
+                title="Start"
+                content={moment(eventSelected?.start.dateTime).format(
+                  menu.DATE_FORMATS.YEAR_DAY_MONTH_HOUR,
+                )}
+              />
             </Col>
             <Col span={12}>
-              <DescriptionItem title="End" content="2022-10-27 | 18:30:00" />
+              <DescriptionItem
+                title="End"
+                content={moment(eventSelected?.end.dateTime).format(
+                  menu.DATE_FORMATS.YEAR_DAY_MONTH_HOUR,
+                )}
+              />
             </Col>
           </Row>
           <Row>
@@ -51,25 +79,18 @@ const DetailsModal = ({
               <DescriptionItem title="Attendees" content />
             </Col>
             <Avatar.Group style={{ marginTop: '-5px' }}>
-              <Avatar src="https://joeschmoe.io/api/v1/random" />
-              <Avatar style={{ backgroundColor: '#f56a00' }}>K</Avatar>
               <Tooltip title="Ant User" placement="top">
-                <Avatar
-                  style={{ backgroundColor: '#87d068' }}
-                  icon={<UserOutlined />}
-                />
+                <Avatar src="https://joeschmoe.io/api/v1/random" />
               </Tooltip>
-              <Avatar
-                style={{ backgroundColor: '#1890ff' }}
-                icon={<AntDesignOutlined />}
-              />
             </Avatar.Group>
           </Row>
           <Row>
             <Col span={24}>
               <DescriptionDetails
                 title="Description"
-                content="Microcomputer Principle and Interface Technology, Computer English, Java, ASP, etc."
+                content={
+                  eventSelected?.description || 'No description provided'
+                }
               />
             </Col>
           </Row>
@@ -87,13 +108,17 @@ const DetailsModal = ({
             <Col span={12}>
               <DescriptionItem
                 title="Created"
-                content="2022-10-03 | 12:31:47"
+                content={moment(eventSelected?.created).format(
+                  menu.DATE_FORMATS.YEAR_DAY_MONTH_HOUR,
+                )}
               />
             </Col>
             <Col span={12}>
               <DescriptionItem
                 title="Updated"
-                content="2022-10-27 | 08:38:17"
+                content={moment(eventSelected?.updated).format(
+                  menu.DATE_FORMATS.YEAR_DAY_MONTH_HOUR,
+                )}
               />
             </Col>
           </Row>
@@ -104,11 +129,7 @@ const DetailsModal = ({
                 content
               />
             </Col>
-            <a
-              target="_blank"
-              rel="noreferrer"
-              href="https://www.google.com/calendar/event?eid=NHNicjBuYm8wMWtxdXFqOGd2ZHNpZ3AzNGEgZW5yaS5yYW5lQHNvZnR1cC5jbw&ctz=GMT+02:00"
-            >
+            <a target="_blank" rel="noreferrer" href={eventSelected?.htmlLink}>
               <SiGooglecalendar className={styles.iconStyles} />
             </a>
           </Row>

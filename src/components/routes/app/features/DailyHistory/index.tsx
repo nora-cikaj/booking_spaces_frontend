@@ -1,37 +1,52 @@
 import moment from 'moment';
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { Button, Divider, List, Popconfirm, Skeleton, Tooltip } from 'antd';
 import { FcInfo } from 'react-icons/fc';
 import { MdDeleteForever, MdOutlineEditCalendar } from 'react-icons/md';
 import { BsFillCalendarCheckFill } from 'react-icons/bs';
+import { useDispatch } from 'react-redux';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import styles from './index.module.scss';
 import { DailyHistoryPropsType } from './types';
-import { eventData } from './data';
+import { AppDispatch } from '../../../../../redux/store';
+import { deleteEvent } from '../../MainPage/core/events/action-creators';
+import { Event } from '../../../../../types/event';
+import { selectTheEvent } from '../../MainPage/core/events/app-reducer';
+import { modifyResourceName } from '../../../../../helpers/modifyResourceName';
 
 const DailyHistory = ({
   showReservationModal,
   showDetailsModal,
+  events,
 }: DailyHistoryPropsType): ReactElement => {
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState<any[]>([]);
-  console.log(data);
-  const loadMoreData = () => {
-    if (loading) {
-      return;
-    }
-    setLoading(true);
-    setData(eventData);
-  };
+  // const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
+  // const [data, setData] = useState<any[]>([]);
+  // const loadMoreData = () => {
+  //   if (loading) {
+  //     return;
+  //   }
+  //   setLoading(true);
+  //   setData(eventData);
+  // };
 
-  useEffect(() => {
-    loadMoreData();
-  }, []);
+  // useEffect(() => {
+  //   loadMoreData();
+  // }, []);
 
-  const handleOnEdit = () => {
+  const handleOnEdit = (item: Event) => {
+    dispatch(selectTheEvent(item));
     showReservationModal(true);
   };
 
+  const handleOnDelete = (id: string) => {
+    dispatch(deleteEvent(id));
+  };
+
+  const handleOnInfo = (item: Event) => {
+    showDetailsModal(true);
+    dispatch(selectTheEvent(item));
+  };
   return (
     <div className={styles.dailyHistoryContainer}>
       <div>
@@ -50,15 +65,19 @@ const DailyHistory = ({
         }}
       >
         <InfiniteScroll
-          dataLength={data.length}
-          next={loadMoreData}
-          hasMore={data.length < 1}
+          dataLength={events.length}
+          // we need a function that will add more
+          // events at the bottom if we have more events than the height of scroll
+          next={() => {
+            console.log('to be handled');
+          }}
+          hasMore={events.length < 1}
           loader={<Skeleton paragraph={{ rows: 1 }} active />}
           endMessage={<Divider plain>That&apos;s all, nothing more 🙅🏻‍♂️</Divider>}
           scrollableTarget="scrollableDiv"
         >
           <List
-            dataSource={data}
+            dataSource={events}
             renderItem={(item) => (
               <List.Item
                 actions={[
@@ -67,7 +86,7 @@ const DailyHistory = ({
                     color="#1890ff"
                     title="Reserved Booth info"
                   >
-                    <Button key="info" onClick={() => showDetailsModal(true)}>
+                    <Button key="info" onClick={() => handleOnInfo(item)}>
                       <FcInfo className={styles.iconStyles} />
                     </Button>
                   </Tooltip>,
@@ -76,7 +95,7 @@ const DailyHistory = ({
                     color="#1890ff"
                     title="Edit reserved Booth"
                   >
-                    <Button key="edit" onClick={handleOnEdit}>
+                    <Button key="edit" onClick={() => handleOnEdit(item)}>
                       <MdOutlineEditCalendar className={styles.iconStyles} />
                     </Button>
                   </Tooltip>,
@@ -91,7 +110,11 @@ const DailyHistory = ({
                       okText="Yes"
                       cancelText="No"
                     >
-                      <Button danger key="delete">
+                      <Button
+                        danger
+                        key="delete"
+                        onClick={() => handleOnDelete(item.id)}
+                      >
                         <MdDeleteForever className={styles.iconDeleteStyles} />
                       </Button>
                     </Popconfirm>
@@ -100,7 +123,7 @@ const DailyHistory = ({
               >
                 <Skeleton title={false} loading={false} active>
                   <List.Item.Meta
-                    title={item.attendees[0].displayName}
+                    title={modifyResourceName(item.attendees[0].displayName)}
                     description={`${moment(item.start.dateTime).format(
                       'LT',
                     )} - ${moment(item.end.dateTime).format('LT')}`}

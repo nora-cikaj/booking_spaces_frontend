@@ -1,15 +1,20 @@
 import React, { ReactElement, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import ProgressiveImage from 'react-progressive-image-loading';
 import { CgScrollV } from 'react-icons/cg';
 import { addEffectOnAreaHover } from './effectOnAreaHover';
 import styles from './index.module.scss';
 import { FloorMapPropsType } from './types';
 import { areasData } from './data';
+import { AppDispatch } from '../../../../../redux/store';
+import { deselectEvent } from '../../MainPage/core/events/app-reducer';
 
 const FloorMap = ({
   changeSelectedSpace,
   showReservationModal,
 }: FloorMapPropsType): ReactElement => {
+  const dispatch = useDispatch<AppDispatch>();
+
   useEffect(() => {
     addEffectOnAreaHover();
   }, []);
@@ -19,6 +24,7 @@ const FloorMap = ({
     id: string,
   ) => {
     e.preventDefault();
+    dispatch(deselectEvent());
     showReservationModal(true);
     changeSelectedSpace(id);
   };

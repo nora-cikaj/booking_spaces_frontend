@@ -24,10 +24,6 @@ export const authSlice = createSlice({
   },
 });
 
-export const {
-  isLoading,
-  hasError,
-  user,
-} = authSlice.actions;
+export const { isLoading, hasError, user } = authSlice.actions;
 
 export default authSlice.reducer;

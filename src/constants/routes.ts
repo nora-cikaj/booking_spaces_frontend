@@ -4,6 +4,7 @@ export default {
     BASE: '/api/v1',
     LOGGED_IN_USER: '/logged-in-user',
     USER: '/user',
+    EVENTS: '/events',
   },
   APP: '/app/dashboard',
   AUTHENTICATE: '/authenticate',
