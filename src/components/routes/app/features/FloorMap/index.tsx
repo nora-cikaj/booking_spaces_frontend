@@ -17,10 +17,11 @@ const FloorMap = ({
   const onAreaClick = (
     e: React.MouseEvent<HTMLAreaElement, MouseEvent>,
     id: string,
+    alt: string,
   ) => {
     e.preventDefault();
     showReservationModal(true);
-    changeSelectedSpace(id);
+    changeSelectedSpace({ id, alt });
   };
 
   const floorPlanUrl = '/images/softup_plan.png';
@@ -53,7 +54,7 @@ const FloorMap = ({
               shape={area.shape}
               coords={area.coords}
               alt={area.alt}
-              onClick={(e) => onAreaClick(e, area.id)}
+              onClick={(e) => onAreaClick(e, area.id, area.alt)}
             />
           );
         })}

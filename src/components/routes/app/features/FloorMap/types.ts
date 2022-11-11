@@ -1,4 +1,4 @@
 export type FloorMapPropsType = {
   showReservationModal: (a: boolean) => void;
-  changeSelectedSpace: (a: string) => void;
+  changeSelectedSpace: (param: { id: string; alt: string }) => void;
 };

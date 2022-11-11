@@ -9,5 +9,5 @@ export type FormValues = {
 
 export type ReservationModalPropsType = {
   showReservationModal: (a: boolean) => void;
-  title: string;
+  resource: { id: string; alt: string };
 };
