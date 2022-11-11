@@ -1,23 +1,36 @@
 // eslint-disable-next-line object-curly-newline
 import { Field, Form, Formik, FormikProps } from 'formik';
 import { ReactElement } from 'react';
-import { Space, DatePicker } from 'antd';
-import { useSelector } from 'react-redux';
+import {
+  Space,
+  DatePicker,
+  Divider,
+  Row,
+  Col,
+  Alert,
+  Button,
+  Select,
+} from 'antd';
 import moment, { Moment } from 'moment';
-import { FileTextOutlined, VerticalAlignTopOutlined } from '@ant-design/icons';
+import {
+  ClockCircleOutlined,
+  FileTextOutlined,
+  VerticalAlignTopOutlined,
+} from '@ant-design/icons';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../../redux/store';
 import CustomModal from '../../../../common/Modal';
 import CustomInput from '../../../../common/Input';
 import CustomSelect from '../../../../common/Select';
-import CustomButton from '../../../../common/Button';
 import styles from './index.module.scss';
 import { FormValues, ReservationModalPropsType } from './types';
-import { RootState } from '../../../../../redux/store';
+import { DescriptionItem } from '../../../../common/DescriptionItem';
 import { modifyResourceName } from '../../../../../helpers/modifyResourceName';
 import menu from '../../../../../constants/menu';
 
 const ReservationModal = ({
   showReservationModal,
-  title,
+  resource,
 }: ReservationModalPropsType): ReactElement => {
   const x = {
     nextSlot: 30,
@@ -51,12 +64,19 @@ const ReservationModal = ({
   const eventSelected = useSelector(
     (state: RootState) => state.events.eventSelected,
   );
+  const users = useSelector((state: RootState) => state.users.usersList) || [];
+  const resources =
+    useSelector((state: RootState) => state.resources.resourcesList) || [];
+
+  const selectedResource = resources.find(
+    (room) => room.resourceId === resource.id,
+  );
+
+  const { Option, OptGroup } = Select;
   return (
     <CustomModal
       visible
-      title={
-        modifyResourceName(eventSelected?.attendees[0].displayName) || title
-      }
+      title={`${resource.alt}`}
       onCancel={() => showReservationModal(false)}
       content={
         <div>
@@ -88,7 +108,11 @@ const ReservationModal = ({
             {(props: FormikProps<FormValues>) => (
               <Form className={styles.modalContainer}>
                 <Field
-                  prefix={<VerticalAlignTopOutlined />}
+                  suffix={
+                    <VerticalAlignTopOutlined
+                      className={styles.iconModalStyle}
+                    />
+                  }
                   name="title"
                   as={CustomInput}
                   placeholder="Add title"
@@ -98,64 +122,99 @@ const ReservationModal = ({
                     defaultValue={moment(eventSelected?.start.dateTime)}
                     onChange={(date) => props.setFieldValue('time', date)}
                   />
+
+                  <CustomSelect
+                    name="start"
+                    placeholder="Start time"
+                    suffixIcon={<ClockCircleOutlined />}
+                    options={[{ key: 1, label: 'Start', value: 'Start' }]}
+                    onChange={(value) => {
+                      props.setFieldValue('start', value);
+                    }}
+                  />
+                  <CustomSelect
+                    name="start"
+                    placeholder="End time"
+                    suffixIcon={<ClockCircleOutlined />}
+                    options={[{ key: 1, label: 'End', value: 'End' }]}
+                    onChange={(value) => {
+                      props.setFieldValue('end', value);
+                    }}
+                  />
                 </Space>
-                <CustomSelect
-                  name="start"
-                  defaultValue={moment(eventSelected?.start.dateTime).format(
-                    menu.DATE_FORMATS.HOUR_MINUTE,
-                  )}
-                  placeholder="Start time"
-                  options={[{ key: 1, label: 'Start', value: 'Start' }]}
-                  onChange={(value) => {
-                    props.setFieldValue('start', value);
-                  }}
-                />
-                <CustomSelect
-                  name="end"
-                  defaultValue={moment(eventSelected?.end.dateTime).format(
-                    menu.DATE_FORMATS.HOUR_MINUTE,
-                  )}
-                  placeholder="End time"
-                  options={[{ key: 1, label: 'End', value: 'End' }]}
-                  onChange={(value) => {
-                    props.setFieldValue('end', value);
-                  }}
-                />
-                <CustomSelect
-                  name="guests"
+                <Select
                   mode="multiple"
+                  showArrow
                   style={{ width: '100%' }}
-                  placeholder="Add guests"
-                  options={[
-                    { key: 1, label: <p>enri</p>, value: 'guest1' },
-                    { key: 2, label: 'guest2', value: 'guest2' },
-                    { key: 3, label: 'guest3', value: 'guest3' },
-                  ]}
+                  placeholder="Add attendees"
                   onChange={(value) => {
                     props.setFieldValue('guests', value);
                   }}
-                />
+                >
+                  <OptGroup label="Softup workspace">
+                    <Option value="team@softup.co">team@softup.co</Option>
+                  </OptGroup>
+                  <OptGroup label="Softup employees">
+                    {users.map((user) => {
+                      return (
+                        <Option key={user.id} value={user.primaryEmail}>
+                          {user.primaryEmail}
+                        </Option>
+                      );
+                    })}
+                  </OptGroup>
+                </Select>
                 <Field
                   name="description"
-                  prefix={<FileTextOutlined />}
+                  suffix={
+                    <FileTextOutlined className={styles.iconModalStyle} />
+                  }
                   as={CustomInput}
                   placeholder="Add description"
                 />
-                <div className={styles.buttonModalStyle}>
-                  <CustomButton
-                    buttonType="info"
-                    label="Book now"
+                <div className={styles.buttonModalWrapper}>
+                  <Button
+                    type="primary"
                     htmlType="submit"
-                  />
-                  <CustomButton
-                    buttonType="ghost"
-                    label="Cancel"
+                    className={styles.modalFooterButtonStyle}
+                  >
+                    Book event
+                  </Button>
+                  <Button
+                    type="ghost"
+                    className={styles.modalFooterButtonStyle}
                     onClick={() => showReservationModal(false)}
-                  />
+                  >
+                    Cancel
+                  </Button>
                 </div>
               </Form>
             )}
           </Formik>
+          <Divider className={styles.modalDividerStyle}>Booth details</Divider>
+          <Row>
+            <Col span={12}>
+              <DescriptionItem
+                title="Capacity"
+                content={`${selectedResource?.capacity} person${
+                  selectedResource?.capacity! > 1 ? 's' : ''
+                }`}
+              />
+            </Col>
+            <Col span={12}>
+              <DescriptionItem
+                title="Type"
+                content={`${selectedResource?.resourceName}`}
+              />
+            </Col>
+            <Alert
+              message={`Available for booking only for events with up to ${
+                selectedResource?.capacity
+              } person${selectedResource?.capacity! > 1 ? 's' : ''}.`}
+              type="info"
+              showIcon
+            />
+          </Row>
         </div>
       }
     />

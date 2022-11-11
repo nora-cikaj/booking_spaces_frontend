@@ -9,7 +9,7 @@ const LogIn = (): ReactElement => {
         <div className={styles.centered}>
           <img
             className={styles.logoStyle}
-            src="/images/logo_softup.svg"
+            src="/images/logo_boothup.svg"
             alt="softup-logo"
           />
           <h1 className={styles.titleLoginStyle}>Welcome to BoothUp</h1>

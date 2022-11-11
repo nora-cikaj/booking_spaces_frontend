@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactElement, ReactNode } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { Tooltip, Select } from 'antd';
@@ -26,6 +26,7 @@ type SelectPropsType = {
   mode?: 'multiple' | 'tags' | undefined;
   defaultValue?: string | number;
   onChange?: (e?: any) => void;
+  suffixIcon?: ReactNode;
 };
 
 const CustomSelect = (props: SelectPropsType): ReactElement => {
@@ -60,9 +61,10 @@ const CustomSelect = (props: SelectPropsType): ReactElement => {
     name: props.name,
     defaultValue: props.defaultValue,
     onChange: props.onChange,
+    suffixIcon: props.suffixIcon,
   };
 
-  return <Select options={props.options} {...commonProps} />;
+  return <Select {...commonProps} />;
 };
 
 CustomSelect.defaultProps = {
@@ -75,6 +77,7 @@ CustomSelect.defaultProps = {
   allowClear: false,
   mode: 'single',
   onChange: () => {},
+  suffixIcon: undefined,
 };
 
 export default CustomSelect;

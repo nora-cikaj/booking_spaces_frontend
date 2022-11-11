@@ -84,7 +84,7 @@ const DailyHistory = ({
                   <Tooltip
                     placement="topLeft"
                     color="#1890ff"
-                    title="Reserved Booth info"
+                    title="Reserved event info"
                   >
                     <Button key="info" onClick={() => handleOnInfo(item)}>
                       <FcInfo className={styles.iconStyles} />
@@ -102,11 +102,11 @@ const DailyHistory = ({
                   <Tooltip
                     placement="topLeft"
                     color="#ff3b4f"
-                    title="Delete reserved Booth"
+                    title="Delete event"
                   >
                     <Popconfirm
                       placement="left"
-                      title="Are you sure you want to delete reserved Booth?"
+                      title="Are you sure you want to delete this event?"
                       okText="Yes"
                       cancelText="No"
                     >

@@ -17,6 +17,8 @@ import { deselectEvent } from '../../MainPage/core/events/app-reducer';
 const DetailsModal = ({
   showDetailsModal,
 }: DailyHistoryPropsType): ReactElement => {
+  const users = useSelector((state: RootState) => state.users.usersList);
+
   const dispatch = useDispatch<AppDispatch>();
 
   const eventSelected = useSelector(
@@ -79,9 +81,18 @@ const DetailsModal = ({
               <DescriptionItem title="Attendees" content />
             </Col>
             <Avatar.Group style={{ marginTop: '-5px' }}>
+              <Avatar src="https://joeschmoe.io/api/v1/random" />
+              <Avatar style={{ backgroundColor: '#f56a00' }}>K</Avatar>
               <Tooltip title="Ant User" placement="top">
-                <Avatar src="https://joeschmoe.io/api/v1/random" />
+                <Avatar
+                  style={{ backgroundColor: '#87d068' }}
+                  icon={<UserOutlined />}
+                />
               </Tooltip>
+              <Avatar
+                style={{ backgroundColor: '#1890ff' }}
+                icon={<AntDesignOutlined />}
+              />
             </Avatar.Group>
           </Row>
           <Row>

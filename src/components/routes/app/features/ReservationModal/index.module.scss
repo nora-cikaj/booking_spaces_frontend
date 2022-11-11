@@ -3,7 +3,9 @@
     line-height: 3.5;
     .ant-select:not(.ant-select-customize-input) .ant-select-selector {
       border-radius: 8px;
-      height: 35px;
+    }
+    .ant-alert-info {
+      border-radius: 20px;
     }
     .ant-picker {
       border-radius: 8px;
@@ -11,8 +13,17 @@
       height: 36px;
     }
   }
-  .buttonModalStyle {
+  .buttonModalWrapper {
     display: flex;
     flex-direction: row-reverse;
+    gap: 10px;
+  }
+  .modalFooterButtonStyle {
+    border-radius: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  .iconModalStyle {
+    color: #bfbfbf;
   }
 }
