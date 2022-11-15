@@ -10,7 +10,7 @@
     .ant-picker {
       border-radius: 8px;
       margin-right: 10px;
-      height: 36px;
+      height: 33px;
     }
   }
   .buttonModalWrapper {
@@ -25,5 +25,12 @@
   }
   .iconModalStyle {
     color: #bfbfbf;
+  }
+
+  .placeholderError {
+    ::placeholder {
+      color: red;
+      opacity: 0.8 !important;
+    }
   }
 }

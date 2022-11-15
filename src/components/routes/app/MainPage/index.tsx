@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import moment from 'moment';
+import momentTZ from 'moment-timezone';
 import AppHeader from '../features/AppHeader';
 import FloorMap from '../features/FloorMap';
 import ReservationModal from '../features/ReservationModal';
 import DailyHistory from '../features/DailyHistory';
 import styles from './index.module.scss';
 import DetailsModal from '../features/DetailsModal';
-import { AppDispatch } from '../../../../redux/store';
+import { AppDispatch, RootState } from '../../../../redux/store';
 import { fetchAllRooms } from './core/resources/actions-creators';
 import { fetchAllUsers } from './core/users/action-creators';
-import { AppDispatch, RootState } from '../../../../redux/store';
 import { listEvents } from './core/events/action-creators';
 
 const MainPage: React.FC = () => {
@@ -17,19 +18,23 @@ const MainPage: React.FC = () => {
   const [isDetailsModalShown, showDetailsModal] = useState(false);
   const [selectedSpace, changeSelectedSpace] = useState({ id: '', alt: '' });
 
-  const dispatch = useDispatch<AppDispatch>();
-  dispatch(fetchAllRooms());
-  dispatch(fetchAllUsers());
-
   const events =
     useSelector((state: RootState) => state.events.eventList) || [];
-
-  // const error = useSelector((state: RootState) => state.events.error);
 
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    dispatch(listEvents());
+    const timeMin = moment(momentTZ().tz('Europe/Berlin').format())
+      .utc()
+      .startOf('day')
+      .toISOString();
+    const timeMax = moment(momentTZ().tz('Europe/Berlin').format())
+      .utc()
+      .endOf('day')
+      .toISOString();
+    dispatch(listEvents({ timeMin, timeMax }));
+    dispatch(fetchAllRooms());
+    dispatch(fetchAllUsers());
   }, []);
 
   return (
@@ -44,6 +49,7 @@ const MainPage: React.FC = () => {
           events={events}
           showReservationModal={showReservationModal}
           showDetailsModal={showDetailsModal}
+          changeSelectedSpace={changeSelectedSpace}
         />
         {isDetailsModalShown ? (
           <DetailsModal showDetailsModal={showDetailsModal} />

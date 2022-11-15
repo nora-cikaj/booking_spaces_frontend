@@ -1,6 +1,6 @@
 import { AppDispatch } from '../../../../../../redux/store';
 import { getResourcesList } from './resources-api';
-import { getAllRooms, hasError, isLoading } from './resources.reducer';
+import { getAllRooms, hasError, isLoading } from './resources-reducer';
 
 export const fetchAllRooms = () => {
   return async (dispatch: AppDispatch) => {

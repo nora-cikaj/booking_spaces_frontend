@@ -3,13 +3,13 @@ export const areasData = [
     id: '63252663631',
     shape: 'poly',
     coords: '443,905,314,903,312,701,444,700',
-    alt: 'Conference room',
+    alt: 'Conference Room',
   },
   {
     id: '69229281861',
     shape: 'poly',
     coords: '268,348,167,399,209,480,294,439,300,427,301,412',
-    alt: 'Quiet room',
+    alt: 'Quiet Room',
   },
   {
     id: '27499963405',
@@ -21,7 +21,7 @@ export const areasData = [
     id: '62313677848',
     shape: 'poly',
     coords: '314,1047,445,1045,445,1122,437,1142,427,1150,417,1152,313,1154',
-    alt: 'Meeting room',
+    alt: 'Meeting Room',
   },
   {
     id: '85281562487',

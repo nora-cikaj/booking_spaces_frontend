@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Event } from '../../../../../../types/event';
+import { Event, EventUpdateRequestType } from '../../../../../../types/event';
 import { EventState } from './types';
 
 const initialState: EventState = {
@@ -22,20 +22,26 @@ export const eventSlice = createSlice({
     addEvents: (state, action: PayloadAction<Event[] | undefined>) => {
       state.eventList = action.payload;
     },
+    addEvent: (state, action: PayloadAction<Event>) => {
+      state.eventList?.unshift(action.payload);
+    },
     deleteTheEvent: (state, action: PayloadAction<string | undefined>) => {
       state.eventList = state.eventList?.filter(
         (event) => event.id !== action.payload,
       );
     },
-    updateTheEvent: (state, action: PayloadAction<Event | undefined>) => {
+    updateTheEvent: (
+      state,
+      action: PayloadAction<{ eventId: string; event: EventUpdateRequestType }>,
+    ) => {
       state.eventList = state.eventList?.map((event) => {
-        if (event.id === action.payload?.id) {
-          event = { ...action.payload };
+        if (event.id === action.payload.eventId) {
+          event = { ...event, ...action.payload.event.event };
         }
         return event;
       });
     },
-    selectTheEvent: (state, action: PayloadAction<Event | undefined>) => {
+    selectTheEvent: (state, action: PayloadAction<Event>) => {
       state.eventSelected = action.payload;
     },
     deselectEvent: (state, action: PayloadAction<Event | undefined>) => {
@@ -48,6 +54,7 @@ export const {
   isLoading,
   hasError,
   addEvents,
+  addEvent,
   deleteTheEvent,
   updateTheEvent,
   selectTheEvent,

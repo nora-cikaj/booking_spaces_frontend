@@ -2,7 +2,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import { ReactElement } from 'react';
 import { Avatar, Col, Divider, Row, Tooltip } from 'antd';
-import { AntDesignOutlined, UserOutlined } from '@ant-design/icons';
 import { SiGooglecalendar } from 'react-icons/si';
 import { AppDispatch, RootState } from '../../../../../redux/store';
 import { DescriptionItem } from '../../../../common/DescriptionItem';
@@ -11,8 +10,7 @@ import CustomModal from '../../../../common/Modal';
 import { DailyHistoryPropsType } from './types';
 import styles from './index.module.scss';
 import menu from '../../../../../constants/menu';
-import { modifyResourceName } from '../../../../../helpers/modifyResourceName';
-import { deselectEvent } from '../../MainPage/core/events/app-reducer';
+import { deselectEvent } from '../../MainPage/core/events/event-reducer';
 
 const DetailsModal = ({
   showDetailsModal,
@@ -24,13 +22,34 @@ const DetailsModal = ({
   const eventSelected = useSelector(
     (state: RootState) => state.events.eventSelected,
   );
+
+  const attendees = eventSelected?.attendees.map(
+    (attendant) => attendant.email,
+  );
+
+  const attendeesWithoutBoothupAndRom = attendees?.filter((attendant) => {
+    // eslint-disable-next-line implicit-arrow-linebreak
+    return (
+      attendant.includes('@softup.co') && attendant !== menu.EMAILS.BOOTHUP
+    );
+  });
+
+  const usersWithoutBoothupAndRom = users?.filter((user) => {
+    // eslint-disable-next-line implicit-arrow-linebreak
+    if (attendeesWithoutBoothupAndRom?.includes(user.primaryEmail)) {
+      return user;
+    }
+    return null;
+  });
+
   const handleOnCancel = () => {
     showDetailsModal(false);
     dispatch(deselectEvent());
   };
+
   return (
     <CustomModal
-      title={modifyResourceName(eventSelected?.attendees[0].displayName)}
+      title={eventSelected?.location || ''}
       onCancel={handleOnCancel}
       style={{ width: '500px' }}
       content={
@@ -52,10 +71,7 @@ const DetailsModal = ({
               />
             </Col>
             <Col span={12}>
-              <DescriptionItem
-                title="Creator"
-                content={eventSelected?.creator.email}
-              />
+              <DescriptionItem title="Creator" content="boothup@softup.co" />
             </Col>
           </Row>
           <Row>
@@ -81,18 +97,17 @@ const DetailsModal = ({
               <DescriptionItem title="Attendees" content />
             </Col>
             <Avatar.Group style={{ marginTop: '-5px' }}>
-              <Avatar src="https://joeschmoe.io/api/v1/random" />
-              <Avatar style={{ backgroundColor: '#f56a00' }}>K</Avatar>
-              <Tooltip title="Ant User" placement="top">
-                <Avatar
-                  style={{ backgroundColor: '#87d068' }}
-                  icon={<UserOutlined />}
-                />
-              </Tooltip>
-              <Avatar
-                style={{ backgroundColor: '#1890ff' }}
-                icon={<AntDesignOutlined />}
-              />
+              {usersWithoutBoothupAndRom?.map((user) => {
+                return (
+                  <Tooltip
+                    key={user.id}
+                    title={user.name.fullName}
+                    placement="top"
+                  >
+                    <Avatar src={user.thumbnailPhotoUrl} />
+                  </Tooltip>
+                );
+              })}
             </Avatar.Group>
           </Row>
           <Row>
