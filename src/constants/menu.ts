@@ -10,4 +10,10 @@ export default {
   EMAILS: {
     BOOTHUP: 'boothup@softup.co',
   },
+  ERROR: {
+    BAD_REQUEST: 'You made a bad request',
+    CREATED_SUCCESSFULLY: 'Event reservation created successfully',
+    UPDATED_SUCCESSFULLY: 'Event reservation updated successfully',
+    DELETED_SUCCESSFULLY: 'Event reservation deleted successfully',
+  },
 };

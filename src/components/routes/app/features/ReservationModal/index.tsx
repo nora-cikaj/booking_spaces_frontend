@@ -1,4 +1,3 @@
-// eslint-disable-next-line object-curly-newline
 import { Field, Form, Formik, FormikProps } from 'formik';
 import momentTZ from 'moment-timezone';
 import { ReactElement, useEffect, useState } from 'react';
@@ -31,13 +30,10 @@ import {
   getEndTimeOptions,
   getEventsOfSelectedDay,
   getAttendeesEmails,
+  getEventForPostRequest,
+  getEventForUpdateRequest,
 } from './helpers';
-import {
-  AttendantType,
-  Event,
-  EventPostRequestType,
-  EventUpdateRequestType,
-} from '../../../../../types/event';
+import { Event } from '../../../../../types/event';
 import {
   postEvent,
   updateEvent,
@@ -106,161 +102,47 @@ const ReservationModal = ({
             onSubmit={(values, actions) => {
               try {
                 if (!eventSelected) {
-                  const foundResource = resources.find(
-                    (room) =>
-                      // eslint-disable-next-line implicit-arrow-linebreak
-                      room.resourceName.toLowerCase() ===
-                      resource.alt.toLowerCase(),
+                  const event = getEventForPostRequest(
+                    resources,
+                    resource,
+                    values,
+                    loggedInUser,
                   );
-                  if (!foundResource) {
-                    throw new Error('A problem with resources');
-                  }
-                  let attendees: AttendantType[] = [];
-                  console.log('att', values.attendees);
-
-                  if (!values.attendees.length) {
-                    attendees = values.attendees.map((attendant) => {
-                      return { email: attendant };
-                    });
-                  }
-                  attendees.push({
-                    email: foundResource?.resourceEmail,
-                    resource: true,
-                  });
-                  attendees.push({
-                    email: menu.EMAILS.BOOTHUP,
-                    organizer: true,
-                    self: true,
-                  });
-                  const startHour = values.start.split(':');
-                  const endHour = values.end.split(':');
-                  const event: EventPostRequestType = {
-                    event: {
-                      summary: values.title,
-                      start: {
-                        dateTime: moment(values.time)
-                          .set('hour', +startHour[0])
-                          .set('minute', +startHour[1])
-                          .set('second', 0)
-                          .format(),
-                        timeZone: menu.TIME_ZONES.EUROPE_BERLIN,
-                      },
-                      end: {
-                        dateTime: moment(values.time)
-                          .set('hour', +endHour[0])
-                          .set('minute', +endHour[1])
-                          .set('second', 0)
-                          .format(),
-                        timeZone: menu.TIME_ZONES.EUROPE_BERLIN,
-                      },
-                      organizer: {
-                        email: loggedInUser?.email || menu.EMAILS.BOOTHUP,
-                      },
-                      attendees,
-                    },
-                  };
-                  if (values.description) {
-                    event.event.description = values.description;
-                  }
-
                   dispatch(postEvent(event));
                   openNotification(
                     'topRight',
-                    'Event reservation created successfully',
+                    menu.ERROR.CREATED_SUCCESSFULLY,
                     'Success',
                     'success',
                   );
                 } else {
-                  const foundResource = resources.find(
-                    (room) => room.resourceName === resource.alt,
+                  const updatedEvent = getEventForUpdateRequest(
+                    resources,
+                    resource,
+                    values,
+                    loggedInUser,
                   );
-                  if (!foundResource) {
-                    throw new Error('A problem with resources');
-                  }
-                  let attendees: AttendantType[] = [];
-
-                  if (values.attendees) {
-                    attendees = values.attendees.map((attendant) => {
-                      return { email: attendant };
-                    });
-                  }
-                  if (
-                    attendees.indexOf({
-                      email: foundResource?.resourceEmail,
-                      resource: true,
-                    }) >= 0
-                  ) {
-                    attendees.push({
-                      email: foundResource?.resourceEmail,
-                      resource: true,
-                    });
-                  }
-                  if (
-                    attendees.indexOf({
-                      email: menu.EMAILS.BOOTHUP,
-                      organizer: true,
-                      self: true,
-                    }) >= 0
-                  ) {
-                    attendees.push({
-                      email: menu.EMAILS.BOOTHUP,
-                      organizer: true,
-                      self: true,
-                    });
-                  }
-
-                  const startHour = values.start.split(':');
-                  const endHour = values.end.split(':');
-
-                  const updatedEvent: EventUpdateRequestType = {
-                    event: {
-                      summary: values.title,
-                      start: {
-                        dateTime: moment(values.time)
-                          .set('hour', +startHour[0])
-                          .set('minute', +startHour[1])
-                          .set('second', 0)
-                          .format(),
-                        timeZone: menu.TIME_ZONES.EUROPE_BERLIN,
-                      },
-                      end: {
-                        dateTime: moment(values.time)
-                          .set('hour', +endHour[0])
-                          .set('minute', +endHour[1])
-                          .set('second', 0)
-                          .format(),
-                        timeZone: menu.TIME_ZONES.EUROPE_BERLIN,
-                      },
-                      organizer: {
-                        email: loggedInUser?.email || menu.EMAILS.BOOTHUP,
-                      },
-                      attendees,
-                    },
-                    email: loggedInUser?.email || menu.EMAILS.BOOTHUP,
-                  };
-                  if (values.description) {
-                    updatedEvent.event.description = values.description;
-                  }
                   if (eventSelected.id) {
                     dispatch(updateEvent(eventSelected.id, updatedEvent));
                     openNotification(
                       'topRight',
-                      'Event reservation updated successfully',
+                      menu.ERROR.UPDATED_SUCCESSFULLY,
                       'Success',
                       'success',
                     );
                   }
                 }
-                showReservationModal(false);
-                actions.resetForm();
-                actions.setSubmitting(false);
               } catch (error) {
                 openNotification(
                   'topRight',
-                  'You made a bad request',
+                  menu.ERROR.BAD_REQUEST,
                   'Error',
                   'error',
                 );
+              } finally {
+                showReservationModal(false);
+                actions.resetForm();
+                actions.setSubmitting(false);
               }
             }}
           >

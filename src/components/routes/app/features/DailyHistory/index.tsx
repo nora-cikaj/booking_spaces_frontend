@@ -1,5 +1,5 @@
 import moment from 'moment';
-import React, { ReactElement, useState } from 'react';
+import { ReactElement, useState } from 'react';
 import { Button, Divider, List, Popconfirm, Skeleton, Tooltip } from 'antd';
 import { FcInfo } from 'react-icons/fc';
 import { MdDeleteForever, MdOutlineEditCalendar } from 'react-icons/md';
@@ -45,7 +45,7 @@ const DailyHistory = ({
     dispatch(deleteEvent(id, loggedInUser?.email!));
     openNotification(
       'topRight',
-      'Event reservation deleted successfully',
+      menu.ERROR.DELETED_SUCCESSFULLY,
       'Success',
       'success',
     );

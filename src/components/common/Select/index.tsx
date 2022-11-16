@@ -5,8 +5,6 @@ import { Tooltip, Select } from 'antd';
 import { colors } from '../../../styles/abstracts/variables';
 import styles from './index.module.scss';
 
-const { Option } = Select;
-
 type OptionProps = {
   label: string | ReactElement;
   value: string | number;
@@ -50,7 +48,6 @@ const CustomSelect = (props: SelectPropsType): ReactElement => {
       />
     );
   };
-  // const prefix = <>{getSuffixIcon(props.error, props.touched)}</>;
   const commonProps = {
     placeholder: props.placeholder,
     disabled: props.disabled,

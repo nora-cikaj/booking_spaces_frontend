@@ -2,14 +2,22 @@ import moment, { Moment } from 'moment';
 import React from 'react';
 import momentTZ from 'moment-timezone';
 import menu from '../../../../../constants/menu';
-import { Event } from '../../../../../types/event';
+import {
+  AttendantType,
+  Event,
+  EventPostRequestType,
+  EventUpdateRequestType,
+} from '../../../../../types/event';
 import { getAllEvents } from '../../MainPage/core/events/event-api';
-import { Attendees } from './types';
+import { Attendees, FormValues } from './types';
+import { Resource } from '../../../../../types/resources';
+import User from '../../../../../types/user';
 
 // getEventAttendeesEmails
 export const getEventAttendeesEmails = (attendees: Attendees) => {
-  attendees = attendees.slice(1, -1);
-  return attendees.map((attendant) => attendant.email);
+  let eventAttendees = [...attendees];
+  eventAttendees = eventAttendees.slice(1, -1);
+  return eventAttendees.map((attendant) => attendant.email);
 };
 
 function isInBreak(time: Moment, breakTimes: string[][]) {
@@ -243,4 +251,153 @@ export const getAttendeesEmails = (eventSelected?: Event): string[] => {
     );
   });
   return attendees || [''];
+};
+
+export const getEventForPostRequest = (
+  resources: Resource[],
+  resource: {
+    id: string;
+    alt: string;
+  },
+  values: FormValues,
+  loggedInUser: User | undefined,
+) => {
+  const foundResource = resources.find(
+    (room) =>
+      // eslint-disable-next-line implicit-arrow-linebreak
+      room.resourceName.toLowerCase() === resource.alt.toLowerCase(),
+  );
+  if (!foundResource) {
+    throw new Error('A problem with resources');
+  }
+  let attendees: AttendantType[] = [];
+  console.log('att', values.attendees);
+
+  if (!values.attendees.length) {
+    attendees = values.attendees.map((attendant) => {
+      return { email: attendant };
+    });
+  }
+  attendees.push({
+    email: foundResource?.resourceEmail,
+    resource: true,
+  });
+  attendees.push({
+    email: menu.EMAILS.BOOTHUP,
+    organizer: true,
+    self: true,
+  });
+  const startHour = values.start.split(':');
+  const endHour = values.end.split(':');
+  const event: EventPostRequestType = {
+    event: {
+      summary: values.title,
+      start: {
+        dateTime: moment(values.time)
+          .set('hour', +startHour[0])
+          .set('minute', +startHour[1])
+          .set('second', 0)
+          .format(),
+        timeZone: menu.TIME_ZONES.EUROPE_BERLIN,
+      },
+      end: {
+        dateTime: moment(values.time)
+          .set('hour', +endHour[0])
+          .set('minute', +endHour[1])
+          .set('second', 0)
+          .format(),
+        timeZone: menu.TIME_ZONES.EUROPE_BERLIN,
+      },
+      organizer: {
+        email: loggedInUser?.email || menu.EMAILS.BOOTHUP,
+      },
+      attendees,
+    },
+  };
+  if (values.description) {
+    event.event.description = values.description;
+  }
+  return event;
+};
+
+export const getEventForUpdateRequest = (
+  resources: Resource[],
+  resource: {
+    id: string;
+    alt: string;
+  },
+  values: FormValues,
+  loggedInUser: User | undefined,
+) => {
+  const foundResource = resources.find(
+    (room) => room.resourceName === resource.alt,
+  );
+  if (!foundResource) {
+    throw new Error('A problem with resources');
+  }
+  let attendees: AttendantType[] = [];
+
+  if (values.attendees) {
+    attendees = values.attendees.map((attendant) => {
+      return { email: attendant };
+    });
+  }
+  if (
+    attendees.indexOf({
+      email: foundResource?.resourceEmail,
+      resource: true,
+    }) >= 0
+  ) {
+    attendees.push({
+      email: foundResource?.resourceEmail,
+      resource: true,
+    });
+  }
+  if (
+    attendees.indexOf({
+      email: menu.EMAILS.BOOTHUP,
+      organizer: true,
+      self: true,
+    }) >= 0
+  ) {
+    attendees.push({
+      email: menu.EMAILS.BOOTHUP,
+      organizer: true,
+      self: true,
+    });
+  }
+
+  const startHour = values.start.split(':');
+  const endHour = values.end.split(':');
+
+  const updatedEvent: EventUpdateRequestType = {
+    event: {
+      summary: values.title,
+      start: {
+        dateTime: moment(values.time)
+          .set('hour', +startHour[0])
+          .set('minute', +startHour[1])
+          .set('second', 0)
+          .format(),
+        timeZone: menu.TIME_ZONES.EUROPE_BERLIN,
+      },
+      end: {
+        dateTime: moment(values.time)
+          .set('hour', +endHour[0])
+          .set('minute', +endHour[1])
+          .set('second', 0)
+          .format(),
+        timeZone: menu.TIME_ZONES.EUROPE_BERLIN,
+      },
+      organizer: {
+        email: loggedInUser?.email || menu.EMAILS.BOOTHUP,
+      },
+      attendees,
+    },
+    email: loggedInUser?.email || menu.EMAILS.BOOTHUP,
+  };
+  if (values.description) {
+    updatedEvent.event.description = values.description;
+  }
+  return updatedEvent;
 };
