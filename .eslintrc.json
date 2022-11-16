@@ -62,6 +62,8 @@
     "react/jsx-wrap-multilines": "off",
     "object-curly-newline": "off",
     "react/no-this-in-sfc": "off",
-    "operator-linebreak": "off"
+    "operator-linebreak": "off",
+    "indent": "off",
+    "function-paren-newline": "off"
   }
 }

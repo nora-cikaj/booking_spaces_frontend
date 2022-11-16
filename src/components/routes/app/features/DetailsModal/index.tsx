@@ -1,24 +1,56 @@
+import { useDispatch, useSelector } from 'react-redux';
+import moment from 'moment';
 import { ReactElement } from 'react';
 import { Avatar, Col, Divider, Row, Tooltip } from 'antd';
-import { AntDesignOutlined, UserOutlined } from '@ant-design/icons';
 import { SiGooglecalendar } from 'react-icons/si';
-import { useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../../../../redux/store';
 import { DescriptionItem } from '../../../../common/DescriptionItem';
 import { DescriptionDetails } from '../../../../common/DescriptionDetails';
 import CustomModal from '../../../../common/Modal';
 import { DailyHistoryPropsType } from './types';
 import styles from './index.module.scss';
-import { RootState } from '../../../../../redux/store';
+import menu from '../../../../../constants/menu';
+import { deselectEvent } from '../../MainPage/core/events/event-reducer';
 
 const DetailsModal = ({
   showDetailsModal,
 }: DailyHistoryPropsType): ReactElement => {
   const users = useSelector((state: RootState) => state.users.usersList);
 
+  const dispatch = useDispatch<AppDispatch>();
+
+  const eventSelected = useSelector(
+    (state: RootState) => state.events.eventSelected,
+  );
+
+  const attendees = eventSelected?.attendees.map(
+    (attendant) => attendant.email,
+  );
+
+  const attendeesWithoutBoothupAndRom = attendees?.filter((attendant) => {
+    // eslint-disable-next-line implicit-arrow-linebreak
+    return (
+      attendant.includes('@softup.co') && attendant !== menu.EMAILS.BOOTHUP
+    );
+  });
+
+  const usersWithoutBoothupAndRom = users?.filter((user) => {
+    // eslint-disable-next-line implicit-arrow-linebreak
+    if (attendeesWithoutBoothupAndRom?.includes(user.primaryEmail)) {
+      return user;
+    }
+    return null;
+  });
+
+  const handleOnCancel = () => {
+    showDetailsModal(false);
+    dispatch(deselectEvent());
+  };
+
   return (
     <CustomModal
-      title="Amphitheatre - Details"
-      onCancel={() => showDetailsModal(false)}
+      title={eventSelected?.location || ''}
+      onCancel={handleOnCancel}
       style={{ width: '500px' }}
       content={
         <div>
@@ -33,21 +65,31 @@ const DetailsModal = ({
           </p>
           <Row>
             <Col span={12}>
-              <DescriptionItem title="Organizer" content="boothup@softup.co" />
+              <DescriptionItem
+                title="Organizer"
+                content={eventSelected?.organizer.email}
+              />
             </Col>
             <Col span={12}>
-              <DescriptionItem
-                title="Creator"
-                content="dionis.uliu@softup.co"
-              />
+              <DescriptionItem title="Creator" content="boothup@softup.co" />
             </Col>
           </Row>
           <Row>
             <Col span={12}>
-              <DescriptionItem title="Start" content="2022-10-27 | 17:00:00" />
+              <DescriptionItem
+                title="Start"
+                content={moment(eventSelected?.start.dateTime).format(
+                  menu.DATE_FORMATS.YEAR_DAY_MONTH_HOUR,
+                )}
+              />
             </Col>
             <Col span={12}>
-              <DescriptionItem title="End" content="2022-10-27 | 18:30:00" />
+              <DescriptionItem
+                title="End"
+                content={moment(eventSelected?.end.dateTime).format(
+                  menu.DATE_FORMATS.YEAR_DAY_MONTH_HOUR,
+                )}
+              />
             </Col>
           </Row>
           <Row>
@@ -55,25 +97,26 @@ const DetailsModal = ({
               <DescriptionItem title="Attendees" content />
             </Col>
             <Avatar.Group style={{ marginTop: '-5px' }}>
-              <Avatar src="https://joeschmoe.io/api/v1/random" />
-              <Avatar style={{ backgroundColor: '#f56a00' }}>K</Avatar>
-              <Tooltip title="Ant User" placement="top">
-                <Avatar
-                  style={{ backgroundColor: '#87d068' }}
-                  icon={<UserOutlined />}
-                />
-              </Tooltip>
-              <Avatar
-                style={{ backgroundColor: '#1890ff' }}
-                icon={<AntDesignOutlined />}
-              />
+              {usersWithoutBoothupAndRom?.map((user) => {
+                return (
+                  <Tooltip
+                    key={user.id}
+                    title={user.name.fullName}
+                    placement="top"
+                  >
+                    <Avatar src={user.thumbnailPhotoUrl} />
+                  </Tooltip>
+                );
+              })}
             </Avatar.Group>
           </Row>
           <Row>
             <Col span={24}>
               <DescriptionDetails
                 title="Description"
-                content="Microcomputer Principle and Interface Technology, Computer English, Java, ASP, etc."
+                content={
+                  eventSelected?.description || 'No description provided'
+                }
               />
             </Col>
           </Row>
@@ -91,13 +134,17 @@ const DetailsModal = ({
             <Col span={12}>
               <DescriptionItem
                 title="Created"
-                content="2022-10-03 | 12:31:47"
+                content={moment(eventSelected?.created).format(
+                  menu.DATE_FORMATS.YEAR_DAY_MONTH_HOUR,
+                )}
               />
             </Col>
             <Col span={12}>
               <DescriptionItem
                 title="Updated"
-                content="2022-10-27 | 08:38:17"
+                content={moment(eventSelected?.updated).format(
+                  menu.DATE_FORMATS.YEAR_DAY_MONTH_HOUR,
+                )}
               />
             </Col>
           </Row>
@@ -108,11 +155,7 @@ const DetailsModal = ({
                 content
               />
             </Col>
-            <a
-              target="_blank"
-              rel="noreferrer"
-              href="https://www.google.com/calendar/event?eid=NHNicjBuYm8wMWtxdXFqOGd2ZHNpZ3AzNGEgZW5yaS5yYW5lQHNvZnR1cC5jbw&ctz=GMT+02:00"
-            >
+            <a target="_blank" rel="noreferrer" href={eventSelected?.htmlLink}>
               <SiGooglecalendar className={styles.iconStyles} />
             </a>
           </Row>

@@ -6,6 +6,7 @@ export default {
     USER: '/user',
     USERS: '/users',
     RESOURCES: '/resources',
+    EVENTS: '/events',
   },
   APP: '/app/dashboard',
   AUTHENTICATE: '/authenticate',

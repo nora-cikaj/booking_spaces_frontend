@@ -1,15 +1,20 @@
 import React, { ReactElement, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import ProgressiveImage from 'react-progressive-image-loading';
 import { CgScrollV } from 'react-icons/cg';
 import { addEffectOnAreaHover } from './effectOnAreaHover';
 import styles from './index.module.scss';
 import { FloorMapPropsType } from './types';
 import { areasData } from './data';
+import { AppDispatch } from '../../../../../redux/store';
+import { deselectEvent } from '../../MainPage/core/events/event-reducer';
 
 const FloorMap = ({
   changeSelectedSpace,
   showReservationModal,
 }: FloorMapPropsType): ReactElement => {
+  const dispatch = useDispatch<AppDispatch>();
+
   useEffect(() => {
     addEffectOnAreaHover();
   }, []);
@@ -20,6 +25,7 @@ const FloorMap = ({
     alt: string,
   ) => {
     e.preventDefault();
+    dispatch(deselectEvent());
     showReservationModal(true);
     changeSelectedSpace({ id, alt });
   };
@@ -40,11 +46,6 @@ const FloorMap = ({
           <img src={src} alt="SoftupFloor" useMap="#softupFloor" width="700" />
         )}
       />
-      <h1 className={styles.ribbonBottom}>
-        <span className={styles.spanRibbonBottom} />
-        Scroll to see full map
-        <CgScrollV className={styles.iconRibbonBottom} />
-      </h1>
       <map name="softupFloor">
         {areasData.map((area) => {
           return (
