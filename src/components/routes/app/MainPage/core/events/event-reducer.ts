@@ -1,11 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import menu from '../../../../../../constants/menu';
 import { Event, EventUpdateRequestType } from '../../../../../../types/event';
-import { EventState } from './types';
+import { EventState, Success } from './types';
 
 const initialState: EventState = {
   eventList: undefined,
   isLoading: false,
   error: undefined,
+  success: undefined,
   eventSelected: undefined,
 };
 
@@ -18,6 +20,21 @@ export const eventSlice = createSlice({
     },
     hasError: (state, action: PayloadAction<any>) => {
       state.error = action.payload;
+    },
+    removeError: (state) => {
+      state.error = undefined;
+    },
+    removeSuccess: (state) => {
+      state.success = undefined;
+    },
+    hasSuccess: (state, action: PayloadAction<string>) => {
+      const successSentance = action.payload;
+      if (successSentance === menu.SUCCESS.CREATED_SUCCESSFULLY) {
+        state.success = { create: successSentance };
+      }
+      if (successSentance === menu.SUCCESS.UPDATED_SUCCESSFULLY) {
+        state.success = { update: successSentance };
+      }
     },
     addEvents: (state, action: PayloadAction<Event[] | undefined>) => {
       state.eventList = action.payload;
@@ -53,8 +70,11 @@ export const eventSlice = createSlice({
 export const {
   isLoading,
   hasError,
+  hasSuccess,
   addEvents,
   addEvent,
+  removeError,
+  removeSuccess,
   deleteTheEvent,
   updateTheEvent,
   selectTheEvent,

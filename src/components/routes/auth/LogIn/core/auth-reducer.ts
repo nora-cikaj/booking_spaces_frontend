@@ -21,9 +21,25 @@ export const authSlice = createSlice({
     user: (state, action: PayloadAction<User | undefined>) => {
       state.user = action.payload;
     },
+    addEventToBelongingUser: (state, action: PayloadAction<string>) => {
+      state.user?.myEvents.push(action.payload);
+    },
+    deleteEventFromBelongingUser: (state, action: PayloadAction<string>) => {
+      if (state.user) {
+        state.user.myEvents = state.user?.myEvents.filter(
+          (eventID) => eventID !== action.payload,
+        );
+      }
+    },
   },
 });
 
-export const { isLoading, hasError, user } = authSlice.actions;
+export const {
+  isLoading,
+  hasError,
+  user,
+  addEventToBelongingUser,
+  deleteEventFromBelongingUser,
+} = authSlice.actions;
 
 export default authSlice.reducer;

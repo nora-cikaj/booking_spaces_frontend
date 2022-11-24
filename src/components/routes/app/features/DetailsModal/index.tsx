@@ -16,6 +16,10 @@ const DetailsModal = ({
   showDetailsModal,
 }: DailyHistoryPropsType): ReactElement => {
   const users = useSelector((state: RootState) => state.users.usersList);
+  const loggedInUser = useSelector((state: RootState) => state.auth.user);
+  const activeUsers = useSelector(
+    (state: RootState) => state.users.activeUsers,
+  );
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -34,7 +38,7 @@ const DetailsModal = ({
     );
   });
 
-  const usersWithoutBoothupAndRom = users?.filter((user) => {
+  const usersWithoutBoothupAndRoom = users?.filter((user) => {
     // eslint-disable-next-line implicit-arrow-linebreak
     if (attendeesWithoutBoothupAndRom?.includes(user.primaryEmail)) {
       return user;
@@ -45,6 +49,14 @@ const DetailsModal = ({
   const handleOnCancel = () => {
     showDetailsModal(false);
     dispatch(deselectEvent());
+  };
+
+  const getOrganizerEmail = () => {
+    const organizer = activeUsers?.find((user) =>
+      // eslint-disable-next-line implicit-arrow-linebreak
+      user.myEvents.includes(eventSelected?.id || ''),
+    );
+    return organizer?.email || loggedInUser?.email;
   };
 
   return (
@@ -67,7 +79,7 @@ const DetailsModal = ({
             <Col span={12}>
               <DescriptionItem
                 title="Organizer"
-                content={eventSelected?.organizer.email}
+                content={getOrganizerEmail()}
               />
             </Col>
             <Col span={12}>
@@ -96,19 +108,31 @@ const DetailsModal = ({
             <Col span={4}>
               <DescriptionItem title="Attendees" content />
             </Col>
-            <Avatar.Group style={{ marginTop: '-5px' }}>
-              {usersWithoutBoothupAndRom?.map((user) => {
-                return (
-                  <Tooltip
-                    key={user.id}
-                    title={user.name.fullName}
-                    placement="top"
-                  >
-                    <Avatar src={user.thumbnailPhotoUrl} />
-                  </Tooltip>
-                );
-              })}
-            </Avatar.Group>
+            {usersWithoutBoothupAndRoom?.length ? (
+              <Avatar.Group style={{ marginTop: '-5px' }}>
+                {usersWithoutBoothupAndRoom?.map((user) => {
+                  return (
+                    <Tooltip
+                      key={user.id}
+                      title={user.name.fullName}
+                      placement="top"
+                    >
+                      <Avatar src={user.thumbnailPhotoUrl} />
+                    </Tooltip>
+                  );
+                })}
+              </Avatar.Group>
+            ) : (
+              <p className={styles.attendees}>No attendees are invited</p>
+            )}
+          </Row>
+          <Row>
+            <Col span={12}>
+              <DescriptionItem
+                title="Summary"
+                content={eventSelected?.summary}
+              />
+            </Col>
           </Row>
           <Row>
             <Col span={24}>

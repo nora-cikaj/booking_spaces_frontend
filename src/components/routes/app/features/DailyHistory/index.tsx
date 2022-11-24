@@ -1,4 +1,5 @@
 import moment from 'moment';
+import _ from 'lodash';
 import { ReactElement, useState } from 'react';
 import { Button, Divider, List, Popconfirm, Skeleton, Tooltip } from 'antd';
 import { FcInfo } from 'react-icons/fc';
@@ -14,6 +15,7 @@ import { Event } from '../../../../../types/event';
 import { selectTheEvent } from '../../MainPage/core/events/event-reducer';
 import menu from '../../../../../constants/menu';
 import { openNotification } from '../../../../common/Notify';
+import { modifyResourceName } from '../../../../../helpers/modifyResourceName';
 
 const DailyHistory = ({
   showReservationModal,
@@ -45,7 +47,7 @@ const DailyHistory = ({
     dispatch(deleteEvent(id, loggedInUser?.email!));
     openNotification(
       'topRight',
-      menu.ERROR.DELETED_SUCCESSFULLY,
+      menu.SUCCESS.DELETED_SUCCESSFULLY,
       'Success',
       'success',
     );
@@ -55,6 +57,14 @@ const DailyHistory = ({
     showDetailsModal(true);
     dispatch(selectTheEvent(item));
   };
+
+  const isUserOrganizerOfEvent = (item: Event) => {
+    if (item.id) {
+      return _.includes(loggedInUser?.myEvents, item.id);
+    }
+    return false;
+  };
+
   return (
     <div className={styles.dailyHistoryContainer}>
       <div>
@@ -74,8 +84,6 @@ const DailyHistory = ({
       >
         <InfiniteScroll
           dataLength={events.length}
-          // we need a function that will add more
-          // events at the bottom if we have more events than the height of scroll
           next={() => {
             if (!events.length) {
               showNoDataMsg(true);
@@ -104,13 +112,13 @@ const DailyHistory = ({
                     placement="top"
                     color="#1890ff"
                     title={
-                      loggedInUser?.email !== item?.organizer.email
+                      !isUserOrganizerOfEvent(item)
                         ? 'No edit access'
                         : 'Edit reserved Booth'
                     }
                   >
                     <Button
-                      disabled={loggedInUser?.email !== item?.organizer.email}
+                      disabled={!isUserOrganizerOfEvent(item)}
                       key="edit"
                       onClick={() => handleOnEdit(item)}
                     >
@@ -121,13 +129,14 @@ const DailyHistory = ({
                     placement="topLeft"
                     color="#ff3b4f"
                     title={
-                      loggedInUser?.email !== item?.organizer.email
+                      !isUserOrganizerOfEvent(item)
                         ? 'No delete access'
                         : 'Delete reserved booth'
                     }
                   >
                     <Popconfirm
                       placement="left"
+                      disabled={!isUserOrganizerOfEvent(item)}
                       title="Are you sure you want to delete this event?"
                       okText="Yes"
                       onConfirm={() => handleOnDelete(item.id!)}
@@ -136,7 +145,7 @@ const DailyHistory = ({
                       <Button
                         danger
                         key="delete"
-                        disabled={loggedInUser?.email !== item?.organizer.email}
+                        disabled={!isUserOrganizerOfEvent(item)}
                       >
                         <MdDeleteForever className={styles.iconDeleteStyles} />
                       </Button>
@@ -145,7 +154,7 @@ const DailyHistory = ({
                 ]}
               >
                 <List.Item.Meta
-                  title={item.location}
+                  title={modifyResourceName(item.location)}
                   description={`${moment(item.start.dateTime).format(
                     menu.DATE_FORMATS.HOUR_MINUTE,
                   )} - ${moment(item.end.dateTime).format(

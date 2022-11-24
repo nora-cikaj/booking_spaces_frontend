@@ -1,9 +1,15 @@
+import moment from 'moment';
+import menu from '../../../../../../constants/menu';
 import { AppDispatch } from '../../../../../../redux/store';
 import {
   Event,
   EventPostRequestType,
   EventUpdateRequestType,
 } from '../../../../../../types/event';
+import {
+  addEventToBelongingUser,
+  deleteEventFromBelongingUser,
+} from '../../../../auth/LogIn/core/auth-reducer';
 import {
   getAllEvents,
   deleteAnEvent,
@@ -15,6 +21,7 @@ import {
   addEvent,
   isLoading,
   hasError,
+  hasSuccess,
   updateTheEvent,
   deleteTheEvent,
 } from './event-reducer';
@@ -27,6 +34,7 @@ export const listEvents = (times: { timeMin?: string; timeMax?: string }) => {
       dispatch(addEvents(events));
     } catch (e: any) {
       dispatch(hasError(e.message));
+      throw new Error(e);
     } finally {
       dispatch(isLoading(false));
     }
@@ -38,7 +46,17 @@ export const postEvent = (event: EventPostRequestType) => {
     try {
       dispatch(isLoading(true));
       const response = await postAnEvent(event);
-      dispatch(addEvent(response));
+      const eventIsHappeningToday = moment(response.start.dateTime).isSame(
+        new Date(),
+        'day',
+      );
+      if (eventIsHappeningToday) {
+        dispatch(addEvent(response));
+        if (response.id) {
+          dispatch(addEventToBelongingUser(response.id));
+        }
+      }
+      dispatch(hasSuccess(menu.SUCCESS.CREATED_SUCCESSFULLY));
     } catch (e: any) {
       dispatch(hasError(e.message));
     } finally {
@@ -53,6 +71,7 @@ export const updateEvent = (eventId: string, event: EventUpdateRequestType) => {
       dispatch(isLoading(true));
       await updateAnEvent(eventId, event);
       dispatch(updateTheEvent({ eventId, event }));
+      dispatch(hasSuccess(menu.SUCCESS.UPDATED_SUCCESSFULLY));
     } catch (e: any) {
       dispatch(hasError(e.message));
     } finally {
@@ -67,6 +86,7 @@ export const deleteEvent = (eventId: string, userEmail: string) => {
       dispatch(isLoading(true));
       await deleteAnEvent(eventId, userEmail);
       dispatch(deleteTheEvent(eventId));
+      dispatch(deleteEventFromBelongingUser(eventId));
     } catch (e: any) {
       dispatch(hasError(e.message));
     } finally {

@@ -26,6 +26,15 @@
   .iconModalStyle {
     color: #bfbfbf;
   }
+  .modalRow > p {
+    margin-top: -14px;
+    font-size: smaller;
+    margin-left: 10px;
+    color: red;
+  }
+  .modalRow {
+    height: 3.7rem;
+  }
 
   .placeholderError {
     ::placeholder {

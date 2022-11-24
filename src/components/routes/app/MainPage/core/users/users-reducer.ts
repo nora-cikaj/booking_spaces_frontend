@@ -1,9 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import User from '../../../../../../types/user';
 import { WorkspaceUser } from '../../../../../../types/users';
 import { UsersState } from './types';
 
 const initialState: UsersState = {
   usersList: undefined,
+  activeUsers: undefined,
   isLoading: false,
   error: undefined,
 };
@@ -18,6 +20,9 @@ export const usersSlice = createSlice({
     hasError: (state, action: PayloadAction<any>) => {
       state.error = action.payload;
     },
+    getActiveUsers: (state, action: PayloadAction<User[]>) => {
+      state.activeUsers = action.payload;
+    },
     getAllUsers: (
       state,
       action: PayloadAction<WorkspaceUser[] | undefined>,
@@ -27,6 +32,7 @@ export const usersSlice = createSlice({
   },
 });
 
-export const { isLoading, hasError, getAllUsers } = usersSlice.actions;
+export const { isLoading, hasError, getAllUsers, getActiveUsers } =
+  usersSlice.actions;
 
 export default usersSlice.reducer;

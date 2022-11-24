@@ -12,7 +12,7 @@ export const getUser = async (): Promise<any> => {
 
 export const logoutUser = async (): Promise<any> => {
   const url = `${routes.API.BASE}/auth/logout`;
-  const response = await Axios({
+  await Axios({
     method: 'GET',
     url,
   });
