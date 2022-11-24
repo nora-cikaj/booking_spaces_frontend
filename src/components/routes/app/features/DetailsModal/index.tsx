@@ -7,14 +7,12 @@ import { AppDispatch, RootState } from '../../../../../redux/store';
 import { DescriptionItem } from '../../../../common/DescriptionItem';
 import { DescriptionDetails } from '../../../../common/DescriptionDetails';
 import CustomModal from '../../../../common/Modal';
-import { DailyHistoryPropsType } from './types';
+import { DetailsPropsType } from './types';
 import styles from './index.module.scss';
 import menu from '../../../../../constants/menu';
 import { deselectEvent } from '../../MainPage/core/events/event-reducer';
 
-const DetailsModal = ({
-  showDetailsModal,
-}: DailyHistoryPropsType): ReactElement => {
+const DetailsModal = ({ showDetailsModal }: DetailsPropsType): ReactElement => {
   const users = useSelector((state: RootState) => state.users.usersList);
   const loggedInUser = useSelector((state: RootState) => state.auth.user);
   const activeUsers = useSelector(

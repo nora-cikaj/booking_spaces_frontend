@@ -34,3 +34,7 @@ export const getEndTime = (values: FormValues) => {
     .set('second', 0)
     .format();
 };
+
+export const getCurrentTime = () => {
+  return moment().format();
+};

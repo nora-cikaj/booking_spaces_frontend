@@ -8,7 +8,7 @@ import { BsFillCalendarCheckFill } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import styles from './index.module.scss';
-import { DailyHistoryPropsType } from './types';
+import { BoothHistoryPropsType } from './types';
 import { AppDispatch, RootState } from '../../../../../redux/store';
 import { deleteEvent } from '../../MainPage/core/events/action-creators';
 import { Event } from '../../../../../types/event';
@@ -18,13 +18,16 @@ import { openNotification } from '../../../../common/Notify';
 import { modifyResourceName } from '../../../../../helpers/modifyResourceName';
 import EventFilter from '../EventFilter';
 
-const DailyHistory = ({
+const BoothHistory = ({
   showReservationModal,
   showDetailsModal,
+  setFilterDate,
+  setIsToday,
   events,
   changeSelectedSpace,
-}: DailyHistoryPropsType): ReactElement => {
+}: BoothHistoryPropsType): ReactElement => {
   const dispatch = useDispatch<AppDispatch>();
+
   const resources = useSelector(
     (state: RootState) => state.resources.resourcesList,
   );
@@ -70,11 +73,11 @@ const DailyHistory = ({
     <div className={styles.dailyHistoryContainer}>
       <div>
         <h1 className={styles.dailyHistoryTitleStyle}>
-          <BsFillCalendarCheckFill className={styles.titleIconStyles} /> Daily
+          <BsFillCalendarCheckFill className={styles.titleIconStyles} /> Booth
           reservations
         </h1>
       </div>
-      <EventFilter />
+      <EventFilter setFilterDate={setFilterDate} setIsToday={setIsToday} />
       <div
         id="scrollableDiv"
         style={{
@@ -172,4 +175,4 @@ const DailyHistory = ({
     </div>
   );
 };
-export default DailyHistory;
+export default BoothHistory;

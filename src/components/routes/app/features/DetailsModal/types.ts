@@ -1,5 +1,5 @@
 import { Event } from '../../../../../types/event';
 
-export type DailyHistoryPropsType = {
+export type DetailsPropsType = {
   showDetailsModal: (a: boolean) => void;
 };

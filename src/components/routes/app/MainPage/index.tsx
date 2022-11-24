@@ -5,7 +5,7 @@ import momentTZ from 'moment-timezone';
 import AppHeader from '../features/AppHeader';
 import FloorMap from '../features/FloorMap';
 import ReservationModal from '../features/ReservationModal';
-import DailyHistory from '../features/DailyHistory';
+import BoothHistory from '../features/BoothHistory';
 import styles from './index.module.scss';
 import DetailsModal from '../features/DetailsModal';
 import { AppDispatch, RootState } from '../../../../redux/store';
@@ -21,11 +21,14 @@ import { user } from '../../auth/LogIn/core/auth-reducer';
 import { openNotification } from '../../../common/Notify';
 import menu from '../../../../constants/menu';
 import { removeError, removeSuccess } from './core/events/event-reducer';
+import { getCurrentTime } from '../../../../helpers/timeFunctionalities';
 
 const MainPage: React.FC = () => {
   const [isReservationModalShown, showReservationModal] = useState(false);
   const [isDetailsModalShown, showDetailsModal] = useState(false);
   const [selectedSpace, changeSelectedSpace] = useState({ id: '', alt: '' });
+  const [isToday, setIsToday] = useState(true);
+  const [filterDate, setFilterDate] = useState(getCurrentTime());
 
   const eventError = useSelector((state: RootState) => state.events.error);
   const eventSuccess = useSelector((state: RootState) => state.events.success);
@@ -46,16 +49,15 @@ const MainPage: React.FC = () => {
     }
   };
   useEffect(() => {
-    const timeMin = moment(momentTZ().tz('Europe/Berlin').format())
+    const day = isToday ? undefined : filterDate;
+    const timeMin = moment(momentTZ(day).format())
       .utc()
       .startOf('day')
       .toISOString();
-    const timeMax = moment(momentTZ().tz('Europe/Berlin').format())
+    const timeMax = moment(momentTZ(day).format())
       .utc()
       .endOf('day')
       .toISOString();
-    console.log('timeMin', timeMin);
-    console.log('timeMax', timeMax);
 
     const getLoggedInUser = async () => {
       const currendUser: User = await getUser();
@@ -69,7 +71,7 @@ const MainPage: React.FC = () => {
     throwNotification();
     dispatch(removeError());
     dispatch(removeSuccess());
-  }, [eventError, eventSuccess]);
+  }, [eventError, eventSuccess, filterDate, isToday]);
 
   return (
     <div>
@@ -79,10 +81,12 @@ const MainPage: React.FC = () => {
           changeSelectedSpace={changeSelectedSpace}
           showReservationModal={showReservationModal}
         />
-        <DailyHistory
+        <BoothHistory
           events={events}
           showReservationModal={showReservationModal}
           showDetailsModal={showDetailsModal}
+          setFilterDate={setFilterDate}
+          setIsToday={setIsToday}
           changeSelectedSpace={changeSelectedSpace}
         />
         {isDetailsModalShown ? (

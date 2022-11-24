@@ -11,9 +11,9 @@ export default {
     BOOTHUP: 'boothup@softup.co',
   },
   SUCCESS: {
-    CREATED_SUCCESSFULLY: 'Event reservation created successfully',
-    UPDATED_SUCCESSFULLY: 'Event reservation updated successfully',
-    DELETED_SUCCESSFULLY: 'Event reservation deleted successfully',
+    CREATED_SUCCESSFULLY: 'Booth reservation created successfully',
+    UPDATED_SUCCESSFULLY: 'Booth reservation updated successfully',
+    DELETED_SUCCESSFULLY: 'Booth reservation deleted successfully',
   },
   ERROR: {
     BAD_REQUEST: 'You made a bad request',

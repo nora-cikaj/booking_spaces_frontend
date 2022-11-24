@@ -47,7 +47,7 @@ export const generateStartTimeSchedules = (events: Event[]) => {
     nextSlot: 30,
     breakTime,
     startTime: '09:00',
-    endTime: '20:30',
+    endTime: '21:00',
   };
 
   let slotTime = moment(timeData.startTime, menu.DATE_FORMATS.HOUR_MINUTE);
@@ -92,7 +92,7 @@ export const generateEndTimeSchedules = (
       .add('minutes', 30)
       .format(menu.DATE_FORMATS.HOUR_MINUTE);
   } else {
-    endTimeData = '24:00';
+    endTimeData = '21:30';
   }
 
   const timeData = {
@@ -102,7 +102,7 @@ export const generateEndTimeSchedules = (
       ? moment(currentEventEndTime)
           .add('minutes', 30)
           .format(menu.DATE_FORMATS.HOUR_MINUTE)
-      : '00:30',
+      : '08:30',
     endTime: endTimeData,
   };
 
@@ -214,7 +214,7 @@ export const getEndTimeOptions = (
       const nextEventStartTime = nextEvent
         ? nextEvent.start.dateTime
         : // eslint-disable-next-line no-octal
-          moment().set('hour', 23).set('minute', 0).format();
+          moment().set('hour', 21).set('minute', 0).format();
       if (eventsOfResource.length === 0) {
         return generateEndTimeSchedules(startTime, undefined, eventsOfResource);
       }
@@ -222,6 +222,7 @@ export const getEndTimeOptions = (
       if (startTime > nextEventStartTime) {
         return generateEndTimeSchedules(startTime, undefined, eventsOfResource);
       }
+
       return generateEndTimeSchedules(startTime, nextEventStartTime);
     }
   }
