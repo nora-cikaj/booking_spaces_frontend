@@ -41,6 +41,7 @@ import {
 import { openNotification } from '../../../../common/Notify';
 import { reservationSchema } from './model';
 import styles from './index.module.scss';
+import { getCurrentTime } from '../../../../../helpers/timeFunctionalities';
 
 const { Option, OptGroup } = Select;
 
@@ -57,7 +58,7 @@ const ReservationModal = ({
     useSelector((state: RootState) => state.resources.resourcesList) || [];
 
   const [startTime, setStartTime] = useState(eventSelected?.start.dateTime);
-  const [selectedDay, setSelectedDay] = useState(moment().format());
+  const [selectedDay, setSelectedDay] = useState(getCurrentTime());
   const [events, setEvents] = useState<Event[]>([]);
 
   const dispatch = useDispatch<AppDispatch>();
