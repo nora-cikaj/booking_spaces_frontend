@@ -6,6 +6,7 @@ type User = {
   avatarUrl: string;
   admin: boolean;
   createdAt: Date;
+  myEvents: string[];
 };
 
 export default User;

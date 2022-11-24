@@ -1,6 +1,5 @@
 import moment, { Moment } from 'moment';
 import React from 'react';
-import momentTZ from 'moment-timezone';
 import menu from '../../../../../constants/menu';
 import {
   AttendantType,
@@ -12,6 +11,12 @@ import { getAllEvents } from '../../MainPage/core/events/event-api';
 import { Attendees, FormValues } from './types';
 import { Resource } from '../../../../../types/resources';
 import User from '../../../../../types/user';
+import {
+  getBeginningOfDay,
+  getEndOfDay,
+  getEndTime,
+  getStartTime,
+} from '../../../../../helpers/timeFunctionalities';
 
 // getEventAttendeesEmails
 export const getEventAttendeesEmails = (attendees: Attendees) => {
@@ -24,7 +29,7 @@ function isInBreak(time: Moment, breakTimes: string[][]) {
   return breakTimes.some(
     (br) =>
       // eslint-disable-next-line implicit-arrow-linebreak
-      time >= moment(br[0], menu.DATE_FORMATS.HOUR_MINUTE) &&
+      time > moment(br[0], menu.DATE_FORMATS.HOUR_MINUTE) &&
       time < moment(br[1], menu.DATE_FORMATS.HOUR_MINUTE),
   );
 }
@@ -41,8 +46,8 @@ export const generateStartTimeSchedules = (events: Event[]) => {
   const timeData = {
     nextSlot: 30,
     breakTime,
-    startTime: '00:00',
-    endTime: '24:00',
+    startTime: '09:00',
+    endTime: '20:30',
   };
 
   let slotTime = moment(timeData.startTime, menu.DATE_FORMATS.HOUR_MINUTE);
@@ -94,7 +99,9 @@ export const generateEndTimeSchedules = (
     nextSlot: 30,
     breakTime,
     startTime: currentEventEndTime
-      ? moment(currentEventEndTime).format(menu.DATE_FORMATS.HOUR_MINUTE)
+      ? moment(currentEventEndTime)
+          .add('minutes', 30)
+          .format(menu.DATE_FORMATS.HOUR_MINUTE)
       : '00:30',
     endTime: endTimeData,
   };
@@ -126,29 +133,44 @@ export const generateEndTimeSchedules = (
     index++;
     slotTime = slotTime.add(timeData.nextSlot, 'minutes');
   }
+
   return startTimes;
 };
 
 export const getStartTimeOptions = (
-  selectedDay: string,
   events: Event[],
   resource: {
     id: string;
     alt: string;
   },
+  loggedInUser: User | undefined,
+  time: string,
   eventSelected?: Event,
 ) => {
-  if (!selectedDay) {
+  if (!time) {
     return undefined;
   }
   if (events) {
     if (eventSelected) {
-      const eventsOfResource = events?.filter(
+      let eventsOfResource = events?.filter(
         (event) =>
           // eslint-disable-next-line implicit-arrow-linebreak
           event.location?.toLowerCase()?.includes(resource.alt.toLowerCase()),
         // eslint-disable-next-line function-paren-newline
       );
+      let isUserOrganizerOfSelectedEvent = false;
+      if (loggedInUser && eventSelected.id) {
+        isUserOrganizerOfSelectedEvent = loggedInUser.myEvents.includes(
+          eventSelected.id,
+        );
+      }
+
+      if (isUserOrganizerOfSelectedEvent) {
+        eventsOfResource = eventsOfResource.filter(
+          (e) => e.id !== eventSelected.id,
+        );
+      }
+
       return generateStartTimeSchedules(eventsOfResource);
     }
 
@@ -184,10 +206,9 @@ export const getEndTimeOptions = (
           // eslint-disable-next-line implicit-arrow-linebreak
           event.location === eventSelected.location,
       );
-
       const nextEvent = eventsOfResource.find((event) => {
         // eslint-disable-next-line implicit-arrow-linebreak
-        return startTime < event.start.dateTime;
+        return startTime <= event.start.dateTime;
       });
 
       const nextEventStartTime = nextEvent
@@ -210,15 +231,26 @@ export const getEndTimeOptions = (
       event.location?.includes(resource?.alt),
     // eslint-disable-next-line function-paren-newline
   );
+
+  const nextEvent = eventsOfResource.find((event) => {
+    // eslint-disable-next-line implicit-arrow-linebreak
+    return startTime <= event.start.dateTime;
+  });
+
+  const nextEventStartTime = nextEvent
+    ? nextEvent.start.dateTime
+    : // eslint-disable-next-line no-octal
+      moment().set('hour', 23).set('minute', 0).format();
   if (eventsOfResource.length === 0) {
     return generateEndTimeSchedules(startTime, undefined, eventsOfResource);
   }
-  if (startTime > eventsOfResource[0].start.dateTime) {
+
+  if (startTime > nextEventStartTime) {
     return generateEndTimeSchedules(startTime, undefined, eventsOfResource);
   }
   return generateEndTimeSchedules(
     startTime,
-    eventsOfResource[0].start.dateTime,
+    nextEventStartTime,
     eventsOfResource,
   );
 };
@@ -227,14 +259,8 @@ export const getEventsOfSelectedDay = async (
   selectedDay: string,
   setEvents: (value: React.SetStateAction<Event[]>) => void,
 ) => {
-  const timeMin = moment(momentTZ(selectedDay).tz('Europe/Berlin').format())
-    .utc()
-    .startOf('day')
-    .toISOString();
-  const timeMax = moment(momentTZ(selectedDay).tz('Europe/Berlin').format())
-    .utc()
-    .endOf('day')
-    .toISOString();
+  const timeMin = getBeginningOfDay(selectedDay);
+  const timeMax = getEndOfDay(selectedDay);
 
   const allEventsOfDay = await getAllEvents(timeMin, timeMax);
 
@@ -250,7 +276,7 @@ export const getAttendeesEmails = (eventSelected?: Event): string[] => {
       attendant.includes('@softup.co') && attendant !== menu.EMAILS.BOOTHUP
     );
   });
-  return attendees || [''];
+  return attendees || [];
 };
 
 export const getEventForPostRequest = (
@@ -260,7 +286,7 @@ export const getEventForPostRequest = (
     alt: string;
   },
   values: FormValues,
-  loggedInUser: User | undefined,
+  loggedInUser?: User,
 ) => {
   const foundResource = resources.find(
     (room) =>
@@ -271,9 +297,7 @@ export const getEventForPostRequest = (
     throw new Error('A problem with resources');
   }
   let attendees: AttendantType[] = [];
-  console.log('att', values.attendees);
-
-  if (!values.attendees.length) {
+  if (values.attendees.length) {
     attendees = values.attendees.map((attendant) => {
       return { email: attendant };
     });
@@ -287,25 +311,16 @@ export const getEventForPostRequest = (
     organizer: true,
     self: true,
   });
-  const startHour = values.start.split(':');
-  const endHour = values.end.split(':');
+
   const event: EventPostRequestType = {
     event: {
       summary: values.title,
       start: {
-        dateTime: moment(values.time)
-          .set('hour', +startHour[0])
-          .set('minute', +startHour[1])
-          .set('second', 0)
-          .format(),
+        dateTime: getStartTime(values),
         timeZone: menu.TIME_ZONES.EUROPE_BERLIN,
       },
       end: {
-        dateTime: moment(values.time)
-          .set('hour', +endHour[0])
-          .set('minute', +endHour[1])
-          .set('second', 0)
-          .format(),
+        dateTime: getEndTime(values),
         timeZone: menu.TIME_ZONES.EUROPE_BERLIN,
       },
       organizer: {
@@ -328,6 +343,7 @@ export const getEventForUpdateRequest = (
   },
   values: FormValues,
   loggedInUser: User | undefined,
+  eventSelected: Event,
 ) => {
   const foundResource = resources.find(
     (room) => room.resourceName === resource.alt,
@@ -337,7 +353,7 @@ export const getEventForUpdateRequest = (
   }
   let attendees: AttendantType[] = [];
 
-  if (values.attendees) {
+  if (values.attendees.length) {
     attendees = values.attendees.map((attendant) => {
       return { email: attendant };
     });
@@ -346,7 +362,7 @@ export const getEventForUpdateRequest = (
     attendees.indexOf({
       email: foundResource?.resourceEmail,
       resource: true,
-    }) >= 0
+    }) < 0
   ) {
     attendees.push({
       email: foundResource?.resourceEmail,
@@ -358,7 +374,7 @@ export const getEventForUpdateRequest = (
       email: menu.EMAILS.BOOTHUP,
       organizer: true,
       self: true,
-    }) >= 0
+    }) < 0
   ) {
     attendees.push({
       email: menu.EMAILS.BOOTHUP,
@@ -370,28 +386,39 @@ export const getEventForUpdateRequest = (
   const startHour = values.start.split(':');
   const endHour = values.end.split(':');
 
+  const startTime =
+    values.start.length === 5
+      ? moment(values.time)
+          .set('hour', +startHour[0])
+          .set('minute', +startHour[1])
+          .set('second', 0)
+          .format()
+      : values.start;
+
+  const endTime =
+    values.end.length === 5
+      ? moment(values.time)
+          .set('hour', +endHour[0])
+          .set('minute', +endHour[1])
+          .set('second', 0)
+          .format()
+      : values.end;
+
   const updatedEvent: EventUpdateRequestType = {
     event: {
       summary: values.title,
       start: {
-        dateTime: moment(values.time)
-          .set('hour', +startHour[0])
-          .set('minute', +startHour[1])
-          .set('second', 0)
-          .format(),
+        dateTime: startTime,
         timeZone: menu.TIME_ZONES.EUROPE_BERLIN,
       },
       end: {
-        dateTime: moment(values.time)
-          .set('hour', +endHour[0])
-          .set('minute', +endHour[1])
-          .set('second', 0)
-          .format(),
+        dateTime: endTime,
         timeZone: menu.TIME_ZONES.EUROPE_BERLIN,
       },
       organizer: {
         email: loggedInUser?.email || menu.EMAILS.BOOTHUP,
       },
+      location: eventSelected.location,
       attendees,
     },
     email: loggedInUser?.email || menu.EMAILS.BOOTHUP,
