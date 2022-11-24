@@ -16,6 +16,7 @@ import { selectTheEvent } from '../../MainPage/core/events/event-reducer';
 import menu from '../../../../../constants/menu';
 import { openNotification } from '../../../../common/Notify';
 import { modifyResourceName } from '../../../../../helpers/modifyResourceName';
+import EventFilter from '../EventFilter';
 
 const DailyHistory = ({
   showReservationModal,
@@ -73,6 +74,7 @@ const DailyHistory = ({
           reservations
         </h1>
       </div>
+      <EventFilter />
       <div
         id="scrollableDiv"
         style={{
