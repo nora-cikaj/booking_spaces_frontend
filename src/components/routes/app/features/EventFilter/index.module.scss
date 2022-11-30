@@ -16,6 +16,9 @@
       margin-right: 10px;
       height: 33px;
     }
+    .ant-select:not(.ant-select-customize-input) .ant-select-selector {
+      border-color: #1890ff;
+    }
   }
   .buttonModalWrapper {
     display: flex;
@@ -37,4 +40,14 @@
   .outlined {
     border-color: #1890ff;
   }
+
+  .filterRow {
+    display: flex;
+  }
+  .resetButton {
+    color: #1890ff;
+  }
+}
+/* Add media queries for responsiveness - when the screen is 500px wide or less, stack the links on top of each other */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1240px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
 }

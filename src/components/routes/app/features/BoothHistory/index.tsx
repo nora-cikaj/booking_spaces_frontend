@@ -22,7 +22,10 @@ const BoothHistory = ({
   showReservationModal,
   showDetailsModal,
   setFilterDate,
-  setIsToday,
+  setResetted,
+  filterDate,
+  selectedFilterResource,
+  setSelectedResource,
   events,
   changeSelectedSpace,
 }: BoothHistoryPropsType): ReactElement => {
@@ -77,7 +80,13 @@ const BoothHistory = ({
           reservations
         </h1>
       </div>
-      <EventFilter setFilterDate={setFilterDate} setIsToday={setIsToday} />
+      <EventFilter
+        filterDate={filterDate}
+        setFilterDate={setFilterDate}
+        setResetted={setResetted}
+        setSelectedResource={setSelectedResource}
+        selectedFilterResource={selectedFilterResource}
+      />
       <div
         id="scrollableDiv"
         style={{
@@ -104,22 +113,14 @@ const BoothHistory = ({
             renderItem={(item) => (
               <List.Item
                 actions={[
-                  <Tooltip
-                    placement="topLeft"
-                    color="#1890ff"
-                    title="Reserved event info"
-                  >
-                    <Button key="info" onClick={() => handleOnInfo(item)}>
-                      <FcInfo className={styles.iconStyles} />
-                    </Button>
-                  </Tooltip>,
+                  <Button key="info" onClick={() => handleOnInfo(item)}>
+                    <FcInfo className={styles.iconStyles} />
+                  </Button>,
                   <Tooltip
                     placement="top"
-                    color="#1890ff"
+                    color="#ff3b4f"
                     title={
-                      !isUserOrganizerOfEvent(item)
-                        ? 'No edit access'
-                        : 'Edit reserved Booth'
+                      !isUserOrganizerOfEvent(item) ? 'No edit access' : ''
                     }
                   >
                     <Button
@@ -134,9 +135,7 @@ const BoothHistory = ({
                     placement="topLeft"
                     color="#ff3b4f"
                     title={
-                      !isUserOrganizerOfEvent(item)
-                        ? 'No delete access'
-                        : 'Delete reserved booth'
+                      !isUserOrganizerOfEvent(item) ? 'No delete access' : ''
                     }
                   >
                     <Popconfirm
