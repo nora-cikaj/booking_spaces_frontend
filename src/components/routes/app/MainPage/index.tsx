@@ -27,14 +27,20 @@ const MainPage: React.FC = () => {
   const [isReservationModalShown, showReservationModal] = useState(false);
   const [isDetailsModalShown, showDetailsModal] = useState(false);
   const [selectedSpace, changeSelectedSpace] = useState({ id: '', alt: '' });
-  const [isToday, setIsToday] = useState(true);
-  const [filterDate, setFilterDate] = useState(getCurrentTime());
+  const [resetted, setResetted] = useState(true);
+  const [filterDate, setFilterDate] = useState('');
+  const [selectedResource, setSelectedResource] = useState('');
 
   const eventError = useSelector((state: RootState) => state.events.error);
   const eventSuccess = useSelector((state: RootState) => state.events.success);
-  const events =
-    useSelector((state: RootState) => state.events.eventList) || [];
+  let events = useSelector((state: RootState) => state.events.eventList) || [];
 
+  if (selectedResource && !resetted) {
+    events = events.filter((e) =>
+      // eslint-disable-next-line implicit-arrow-linebreak
+      e.location?.toLowerCase().includes(selectedResource.toLowerCase()),
+    );
+  }
   const dispatch = useDispatch<AppDispatch>();
 
   const throwNotification = () => {
@@ -49,12 +55,12 @@ const MainPage: React.FC = () => {
     }
   };
   useEffect(() => {
-    const day = isToday ? undefined : filterDate;
-    const timeMin = moment(momentTZ(day).format())
+    const date = filterDate || getCurrentTime();
+    const timeMin = moment(momentTZ(date).format())
       .utc()
       .startOf('day')
       .toISOString();
-    const timeMax = moment(momentTZ(day).format())
+    const timeMax = moment(momentTZ(date).format())
       .utc()
       .endOf('day')
       .toISOString();
@@ -71,7 +77,7 @@ const MainPage: React.FC = () => {
     throwNotification();
     dispatch(removeError());
     dispatch(removeSuccess());
-  }, [eventError, eventSuccess, filterDate, isToday]);
+  }, [eventError, eventSuccess, filterDate, resetted]);
 
   return (
     <div>
@@ -85,9 +91,12 @@ const MainPage: React.FC = () => {
           events={events}
           showReservationModal={showReservationModal}
           showDetailsModal={showDetailsModal}
+          filterDate={filterDate}
+          selectedFilterResource={selectedResource}
           setFilterDate={setFilterDate}
-          setIsToday={setIsToday}
+          setResetted={setResetted}
           changeSelectedSpace={changeSelectedSpace}
+          setSelectedResource={setSelectedResource}
         />
         {isDetailsModalShown ? (
           <DetailsModal showDetailsModal={showDetailsModal} />

@@ -16,6 +16,9 @@
       margin-right: 10px;
       height: 33px;
     }
+    .ant-select:not(.ant-select-customize-input) .ant-select-selector {
+      border-color: #1890ff;
+    }
   }
   .buttonModalWrapper {
     display: flex;
@@ -36,5 +39,12 @@
   }
   .outlined {
     border-color: #1890ff;
+  }
+
+  .filterRow {
+    display: flex;
+  }
+  .resetButton {
+    color: #1890ff;
   }
 }

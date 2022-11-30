@@ -61,7 +61,7 @@ const DetailsModal = ({ showDetailsModal }: DetailsPropsType): ReactElement => {
     <CustomModal
       title={eventSelected?.location || ''}
       onCancel={handleOnCancel}
-      style={{ width: '500px' }}
+      width={600}
       content={
         <div>
           <p
@@ -80,7 +80,7 @@ const DetailsModal = ({ showDetailsModal }: DetailsPropsType): ReactElement => {
                 content={getOrganizerEmail()}
               />
             </Col>
-            <Col span={12}>
+            <Col span={10}>
               <DescriptionItem title="Creator" content="boothup@softup.co" />
             </Col>
           </Row>

@@ -59,13 +59,16 @@
 }
 
 /* Add media queries for responsiveness - when the screen is 500px wide or less, stack the links on top of each other */
-@media only screen and (min-device-width: 800px) and (max-device-width: 2400px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+@media only screen and (min-device-width: 768px) and (max-device-width: 1240px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
   .dailyHistoryContainer {
     :global {
       .ant-list-item-meta-content {
         flex: 1 1 !important;
       }
     }
+  }
+  .dailyHistoryTitleStyle {
+    padding-top: 0px;
   }
 }
 
