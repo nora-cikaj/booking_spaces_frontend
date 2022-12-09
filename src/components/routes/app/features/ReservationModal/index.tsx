@@ -1,4 +1,4 @@
-import { Field, Form, Formik, FormikProps } from 'formik';
+import { Field, Form, Formik, FormikHelpers, FormikProps } from 'formik';
 import momentTZ from 'moment-timezone';
 import { ReactElement, useEffect, useState } from 'react';
 import {
@@ -126,6 +126,40 @@ const ReservationModal = ({
     return null;
   };
 
+  const handleSubmit = (
+    values: FormValues,
+    actions: FormikHelpers<FormValues>,
+  ) => {
+    try {
+      if (!eventSelected) {
+        const event = getEventForPostRequest(
+          resources,
+          resource,
+          values,
+          loggedInUser,
+        );
+        dispatch(postEvent(event));
+      } else if (eventSelected) {
+        const updatedEvent = getEventForUpdateRequest(
+          resources,
+          resource,
+          values,
+          loggedInUser,
+          eventSelected,
+        );
+        if (eventSelected.id) {
+          dispatch(updateEvent(eventSelected.id, updatedEvent));
+        }
+      }
+    } catch (error) {
+      openNotification('topRight', menu.ERROR.BAD_REQUEST, 'Error', 'error');
+    } finally {
+      showReservationModal(false);
+      actions.resetForm();
+      actions.setSubmitting(false);
+    }
+  };
+
   const attendeesEmails = getAttendeesEmails(eventSelected);
 
   return (
@@ -146,39 +180,7 @@ const ReservationModal = ({
             }}
             validationSchema={reservationSchema}
             onSubmit={(values, actions) => {
-              try {
-                if (!eventSelected) {
-                  const event = getEventForPostRequest(
-                    resources,
-                    resource,
-                    values,
-                    loggedInUser,
-                  );
-                  dispatch(postEvent(event));
-                } else if (eventSelected) {
-                  const updatedEvent = getEventForUpdateRequest(
-                    resources,
-                    resource,
-                    values,
-                    loggedInUser,
-                    eventSelected,
-                  );
-                  if (eventSelected.id) {
-                    dispatch(updateEvent(eventSelected.id, updatedEvent));
-                  }
-                }
-              } catch (error) {
-                openNotification(
-                  'topRight',
-                  menu.ERROR.BAD_REQUEST,
-                  'Error',
-                  'error',
-                );
-              } finally {
-                showReservationModal(false);
-                actions.resetForm();
-                actions.setSubmitting(false);
-              }
+              handleSubmit(values, actions);
             }}
           >
             {(props: FormikProps<FormValues>) => (
@@ -201,6 +203,8 @@ const ReservationModal = ({
                   <div>
                     <Space direction="horizontal">
                       <DatePicker
+                        data-testid="time"
+                        name="time"
                         onChange={(date) => onDatePickerChange(date, props)}
                         {...(eventSelected
                           ? {
@@ -213,6 +217,7 @@ const ReservationModal = ({
                       />
 
                       <CustomSelect
+                        testId="start"
                         name="start"
                         placeholder="Start time"
                         suffixIcon={<ClockCircleOutlined />}
@@ -224,15 +229,16 @@ const ReservationModal = ({
                           eventSelected,
                         )}
                         onChange={(value) => onStartSelectChange(value, props)}
-                        {...(eventSelected
-                          ? {
-                              defaultValue: `${moment(
-                                eventSelected?.start.dateTime,
-                              ).format(menu.DATE_FORMATS.HOUR_MINUTE)}`,
-                            }
-                          : null)}
+                        defaultValue={
+                          eventSelected
+                            ? moment(eventSelected?.start.dateTime).format(
+                                menu.DATE_FORMATS.HOUR_MINUTE,
+                              )
+                            : undefined
+                        }
                       />
                       <CustomSelect
+                        testId="end"
                         name="end"
                         touched={props.touched.end}
                         placeholder="End time"
@@ -263,6 +269,7 @@ const ReservationModal = ({
                 </div>
                 <div className={styles.modalRow}>
                   <Select
+                    data-testid="attendees"
                     mode="multiple"
                     showArrow
                     style={{ width: '100%' }}
@@ -309,6 +316,7 @@ const ReservationModal = ({
                 <div className={styles.buttonModalWrapper}>
                   {eventSelected ? null : (
                     <Button
+                      data-testid="submit"
                       type="primary"
                       htmlType="submit"
                       className={styles.modalFooterButtonStyle}
@@ -320,9 +328,11 @@ const ReservationModal = ({
                   {eventSelected ? (
                     <Button
                       type="primary"
+                      name="update"
                       htmlType="submit"
                       className={styles.modalFooterButtonStyle}
                       disabled={areErrors(props)}
+                      data-testid="update"
                     >
                       Update event
                     </Button>

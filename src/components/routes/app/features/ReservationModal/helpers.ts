@@ -89,7 +89,7 @@ export const generateEndTimeSchedules = (
   let endTimeData = '';
   if (nextResourceEventStartTime) {
     endTimeData = moment(nextResourceEventStartTime)
-      .add('minutes', 30)
+      .add(30, 'minutes')
       .format(menu.DATE_FORMATS.HOUR_MINUTE);
   } else {
     endTimeData = '21:30';
@@ -100,7 +100,7 @@ export const generateEndTimeSchedules = (
     breakTime,
     startTime: currentEventEndTime
       ? moment(currentEventEndTime)
-          .add('minutes', 30)
+          .add(30, 'minutes')
           .format(menu.DATE_FORMATS.HOUR_MINUTE)
       : '08:30',
     endTime: endTimeData,
@@ -206,7 +206,7 @@ export const getEndTimeOptions = (
           // eslint-disable-next-line implicit-arrow-linebreak
           event.location === eventSelected.location,
       );
-      const nextEvent = eventsOfResource.find((event) => {
+      const nextEvent = eventsOfResource?.find((event) => {
         // eslint-disable-next-line implicit-arrow-linebreak
         return startTime <= event.start.dateTime;
       });
@@ -215,7 +215,7 @@ export const getEndTimeOptions = (
         ? nextEvent.start.dateTime
         : // eslint-disable-next-line no-octal
           moment().set('hour', 21).set('minute', 0).format();
-      if (eventsOfResource.length === 0) {
+      if (eventsOfResource?.length === 0) {
         return generateEndTimeSchedules(startTime, undefined, eventsOfResource);
       }
 
@@ -233,7 +233,7 @@ export const getEndTimeOptions = (
     // eslint-disable-next-line function-paren-newline
   );
 
-  const nextEvent = eventsOfResource.find((event) => {
+  const nextEvent = eventsOfResource?.find((event) => {
     // eslint-disable-next-line implicit-arrow-linebreak
     return startTime <= event.start.dateTime;
   });
@@ -241,8 +241,8 @@ export const getEndTimeOptions = (
   const nextEventStartTime = nextEvent
     ? nextEvent.start.dateTime
     : // eslint-disable-next-line no-octal
-      moment().set('hour', 23).set('minute', 0).format();
-  if (eventsOfResource.length === 0) {
+      moment().set('hour', 21).set('minute', 0).format();
+  if (eventsOfResource?.length === 0) {
     return generateEndTimeSchedules(startTime, undefined, eventsOfResource);
   }
 

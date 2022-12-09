@@ -5,14 +5,14 @@ export const getBeginningOfDay = (selectedDay: string) => {
   return moment(selectedDay)
     .startOf('day')
     .tz('Europe/Berlin')
-    .add('hour', 1)
+    .add(1, 'hour')
     .toISOString();
 };
 
 export const getEndOfDay = (selectedDay: string) => {
   return moment(selectedDay)
     .endOf('day')
-    .add('hour', 1)
+    .add(1, 'hour')
     .tz('Europe/Berlin')
     .toISOString();
 };

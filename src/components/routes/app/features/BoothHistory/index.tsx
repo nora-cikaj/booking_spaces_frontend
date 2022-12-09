@@ -124,8 +124,10 @@ const BoothHistory = ({
                     }
                   >
                     <Button
+                      data-testid="editButton"
                       disabled={!isUserOrganizerOfEvent(item)}
                       key="edit"
+                      style={{ pointerEvents: 'painted' }}
                       onClick={() => handleOnEdit(item)}
                     >
                       <MdOutlineEditCalendar className={styles.iconStyles} />

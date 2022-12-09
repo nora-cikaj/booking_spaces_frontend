@@ -7,6 +7,7 @@ export const getUser = async (): Promise<any> => {
     method: 'GET',
     url,
   });
+
   return response.data;
 };
 

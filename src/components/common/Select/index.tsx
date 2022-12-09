@@ -25,6 +25,7 @@ type SelectPropsType = {
   onChange?: (e?: any) => void;
   suffixIcon?: ReactNode;
   touched?: boolean;
+  testId?: string;
 };
 
 const CustomSelect = (props: SelectPropsType): ReactElement => {
@@ -59,6 +60,7 @@ const CustomSelect = (props: SelectPropsType): ReactElement => {
     defaultValue: props.defaultValue,
     onChange: props.onChange,
     suffixIcon: props.suffixIcon,
+    'data-testid': props.testId,
   };
 
   return <Select options={props?.options} {...commonProps} />;
@@ -77,6 +79,7 @@ CustomSelect.defaultProps = {
   suffixIcon: undefined,
   options: undefined,
   touched: false,
+  testId: 'ant-common-select-input',
 };
 
 export default CustomSelect;

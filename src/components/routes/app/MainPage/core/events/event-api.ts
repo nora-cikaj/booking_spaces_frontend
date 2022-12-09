@@ -1,4 +1,4 @@
-import Axios from 'axios';
+import Axios, { AxiosResponse } from 'axios';
 import routes from '../../../../../../constants/routes';
 import {
   Event,
@@ -11,12 +11,12 @@ export const getAllEvents = async (
   timeMax?: string,
 ): Promise<Event[]> => {
   const url = `${routes.API.BASE}${routes.API.EVENTS}`;
-  const response = await Axios({
+  const response: AxiosResponse<Event[]> = await Axios({
     method: 'GET',
     url,
     params: { timeMin, timeMax },
   });
-  return response.data;
+  return response?.data;
 };
 
 export const postAnEvent = async (
@@ -28,7 +28,7 @@ export const postAnEvent = async (
     url,
     data: event,
   });
-  return response.data;
+  return response?.data;
 };
 
 export const updateAnEvent = async (
@@ -41,7 +41,7 @@ export const updateAnEvent = async (
     url,
     data: event,
   });
-  return response.data;
+  return response?.data;
 };
 
 export const deleteAnEvent = async (
@@ -54,5 +54,5 @@ export const deleteAnEvent = async (
     url,
     data: { email: userEmail },
   });
-  return response.data;
+  return response?.data;
 };
