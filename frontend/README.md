@@ -17,6 +17,12 @@ BoothUp is a internal booth and meeting room reservation system.
 
 ## Run Locally
 
+Move to frontend directory
+
+```bash
+  cd frontend
+```
+
 Install dependencies
 
 ```bash
@@ -27,6 +33,12 @@ Start the server
 
 ```bash
   npm start
+```
+
+Run tests
+
+```bash
+  npm test
 ```
 
 Runs the app in the development mode.\
