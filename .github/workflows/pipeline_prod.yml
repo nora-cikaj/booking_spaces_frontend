@@ -1,0 +1,37 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  infrastructure-deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+
+      - name: Install Dependencies
+        run: |
+          cd frontend
+          npm install
+          node -v
+          npm -v
+
+      - name: Run Build
+        run: |
+          npm run build
+
+      - name: Run Tests
+        run: |
+          npm test
+
+      - name: Deploy App
+        run: |
+          cd ../infrastructure
+          npm install
+          ENVIRONMENT=prod npm run cdk -- deploy --all --require-approval never
